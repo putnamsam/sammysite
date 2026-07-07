@@ -132,7 +132,18 @@
   input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 3px solid var(--forest); cursor: pointer; }
 
-  .stagger-note { font-size: 0.78rem; color: var(--gold-lt); background: rgba(200,155,60,0.1); border: 1px solid rgba(200,155,60,0.25); border-radius: 6px; padding: 10px 14px; margin-bottom: 32px; text-align: center; }
+  .stagger-note { font-size: 0.78rem; color: var(--gold-lt); background: rgba(200,155,60,0.1); border: 1px solid rgba(200,155,60,0.25); border-radius: 6px; padding: 10px 14px; margin-bottom: 20px; text-align: center; }
+
+  /* ── TOGGLE ── */
+  .toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 32px; padding: 14px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+  .toggle-label { font-size: 0.82rem; color: #A8AEA4; }
+  .toggle-label strong { color: var(--gold-lt); font-weight: 600; }
+  .toggle-switch { position: relative; width: 46px; height: 26px; flex-shrink: 0; cursor: pointer; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-track { position: absolute; inset: 0; background: var(--gold); border-radius: 13px; transition: background 0.25s; }
+  .toggle-track.off { background: rgba(255,255,255,0.2); }
+  .toggle-knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: var(--cream); border-radius: 50%; transition: transform 0.25s; }
+  .toggle-knob.on { transform: translateX(20px); }
 
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
@@ -304,6 +315,15 @@
         </div>
         <div class="stagger-note" id="stagger-note">Krissy is 3 years older — when we retire at the same time, she's 58 and Sam is 55.</div>
 
+        <div class="toggle-row">
+          <div class="toggle-switch" onclick="toggleLTI()">
+            <input type="checkbox" id="lti-check" checked>
+            <span class="toggle-track" id="lti-track"></span>
+            <span class="toggle-knob on" id="lti-knob"></span>
+          </div>
+          <span class="toggle-label" id="lti-label">Investing Sam's Disney stock (LTI) — <strong>on</strong></span>
+        </div>
+
         <div class="chart-frame">
           <div class="bar-chart" id="bar-chart"></div>
         </div>
@@ -450,7 +470,7 @@ function fmt(n) {
   return '$' + Math.round(n);
 }
 
-function project(rate, samRetire, krissyRetire) {
+function project(rate, samRetire, krissyRetire, investLTI) {
   let samDisney = 17007, samMsft = 423373, krissy = 637888;
   let hsa = 38470, taxable = 3375, ira = 369196;
   const r = 1 + rate / 100;
@@ -463,7 +483,7 @@ function project(rate, samRetire, krissyRetire) {
     const krissyWorks = year <= krissyRetire;
     const iraLeft = Math.max(1, 2035 - year + 1);
     const iraDist = year <= 2035 ? ira / iraLeft : 0;
-    const lti = (year >= 2027 && samWorks) ? LTI : 0;
+    const lti = (year >= 2027 && samWorks && investLTI) ? LTI : 0;
     samDisney = samDisney * r + (samWorks ? 23500 : 0);
     samMsft   = samMsft   * r;
     krissy    = krissy    * r + (krissyWorks ? 23500 : 0);
@@ -472,11 +492,18 @@ function project(rate, samRetire, krissyRetire) {
     ira       = Math.max(0, (ira - iraDist) * r);
     rows.push({ year, samDisney, samMsft, krissy, hsa, taxable, ira,
       total: samDisney + samMsft + krissy + hsa + taxable, retired: year >= lastRetire });
-    if (year >= lastRetire) {
-      // freeze contributions but let grow for chart continuity up to retirement year
-    }
   }
   return rows;
+}
+
+let INVEST_LTI = true;
+function toggleLTI() {
+  INVEST_LTI = !INVEST_LTI;
+  document.getElementById('lti-check').checked = INVEST_LTI;
+  document.getElementById('lti-track').className = 'toggle-track' + (INVEST_LTI ? '' : ' off');
+  document.getElementById('lti-knob').className = 'toggle-knob' + (INVEST_LTI ? ' on' : '');
+  document.getElementById('lti-label').innerHTML = `Investing Sam's Disney stock (LTI) — <strong>${INVEST_LTI ? 'on' : 'off'}</strong>`;
+  update();
 }
 
 function update() {
@@ -506,7 +533,7 @@ function update() {
   }
 
   const lastRetire = Math.max(samRetire, krissyRetire);
-  const rows = project(rate, samRetire, krissyRetire);
+  const rows = project(rate, samRetire, krissyRetire, INVEST_LTI);
   const retRow = rows.find(r => r.year === lastRetire) || rows[rows.length - 1];
   const portfolio = retRow.total;
   const annualIncome = portfolio * 0.04;
@@ -525,11 +552,18 @@ function update() {
   document.getElementById('r-fire-sub').textContent = '25× ' + fmt(annualSpend) + ' a year';
 
   const status = document.getElementById('fire-status');
+  const bridgeFund = retRow.taxable;
+  const bridgeNeeded = annualSpend * 5; // ~5 years of bridge before 59.5
+  const bridgeShort = bridgeNeeded - bridgeFund;
   if (onTrack) {
     status.style.background = 'rgba(91,140,110,0.15)';
     status.style.color = 'var(--sage)';
     status.style.border = '1px solid rgba(91,140,110,0.4)';
-    status.textContent = `✓ On track — ${fmt(portfolio)} comfortably clears the ${fmt(fireNum)} we need`;
+    if (!INVEST_LTI && bridgeShort > 0) {
+      status.innerHTML = `✓ Still on track — ${fmt(portfolio)} clears the ${fmt(fireNum)} we need.<br><span style="color:var(--gold-lt); font-size:0.82rem;">But the bridge fund is ~${fmt(bridgeShort)} short for the early years — we'd lean on Roth conversions to fill the gap.</span>`;
+    } else {
+      status.textContent = `✓ On track — ${fmt(portfolio)} comfortably clears the ${fmt(fireNum)} we need`;
+    }
   } else {
     status.style.background = 'rgba(192,123,84,0.15)';
     status.style.color = 'var(--clay)';
