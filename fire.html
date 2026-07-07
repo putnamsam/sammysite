@@ -5,476 +5,419 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Future · Sam & Krissy</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg:     #F6F3EE;
-    --dark:   #1E1E1C;
-    --mid:    #5C5C4A;
-    --muted:  #9A9A8E;
-    --rule:   #D4D0C8;
-    --paper:  #EDEAE3;
-    --gold:   #C4A44A;
-    --green:  #6B9E7A;
-    --blue:   #6A8FA6;
-    --purple: #9A7FA6;
-    --red:    #C47A6A;
+    --bg:      #F4EFE6;
+    --bg-warm: #EFE8DB;
+    --dark:    #17201C;
+    --forest:  #22332B;
+    --mid:     #4A5A4E;
+    --muted:   #8B9089;
+    --rule:    #D5CDBE;
+    --paper:   #EBE3D5;
+    --gold:    #C89B3C;
+    --gold-lt: #E0C170;
+    --green:   #5B8C6E;
+    --sage:    #8AAB8E;
+    --blue:    #5E8299;
+    --purple:  #8B7BA6;
+    --clay:    #C07B54;
+    --cream:   #F9F5EC;
   }
 
-  body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--dark); }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--dark); overflow-x: hidden; }
 
   /* ── PASSWORD GATE ── */
   #gate {
-    position: fixed; inset: 0; background: var(--dark);
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, #22332B 0%, #17201C 70%);
     display: flex; align-items: center; justify-content: center;
-    z-index: 1000; flex-direction: column; gap: 24px;
+    z-index: 1000; flex-direction: column; gap: 20px; padding: 24px;
   }
-  #gate h1 { font-family: 'Playfair Display', serif; color: #F6F3EE; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; }
-  #gate p  { color: #9A9A8E; font-size: 0.875rem; }
+  #gate .mtn { font-size: 2.5rem; margin-bottom: 4px; filter: saturate(0.7); }
+  #gate h1 { font-family: 'Fraunces', serif; color: var(--cream); font-size: 2.25rem; font-weight: 500; letter-spacing: -0.02em; }
+  #gate p  { color: var(--muted); font-size: 0.875rem; letter-spacing: 0.02em; }
   #gate input {
-    background: #2C2C2A; border: 1px solid #444; color: #F6F3EE;
-    padding: 12px 20px; border-radius: 4px; font-size: 1rem;
-    font-family: 'Inter', sans-serif; width: 260px; text-align: center;
-    letter-spacing: 0.1em;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: var(--cream);
+    padding: 14px 22px; border-radius: 6px; font-size: 1rem;
+    font-family: 'Inter', sans-serif; width: 280px; text-align: center;
+    letter-spacing: 0.15em; transition: border-color 0.2s;
   }
   #gate input:focus { outline: none; border-color: var(--gold); }
   #gate button {
     background: var(--gold); color: var(--dark); border: none;
-    padding: 12px 32px; border-radius: 4px; font-size: 0.875rem;
+    padding: 13px 40px; border-radius: 6px; font-size: 0.8rem;
     font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer;
-    letter-spacing: 0.05em; text-transform: uppercase;
+    letter-spacing: 0.1em; text-transform: uppercase; transition: transform 0.15s, box-shadow 0.2s;
   }
-  #gate button:hover { opacity: 0.9; }
-  #gate-error { color: var(--red); font-size: 0.8rem; display: none; }
+  #gate button:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,155,60,0.3); }
+  #gate-error { color: var(--clay); font-size: 0.8rem; display: none; min-height: 1rem; }
 
-  /* ── MAIN CONTENT ── */
-  #app { display: none; background: var(--bg); min-height: 100vh; }
+  #app { display: none; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* ── HERO ── */
   .hero {
-    background: var(--dark); padding: 80px 48px 64px;
-    text-align: center; position: relative; overflow: hidden;
+    background: radial-gradient(ellipse at 50% 0%, #24352C 0%, #17201C 65%);
+    padding: 100px 32px 88px; text-align: center; position: relative; overflow: hidden;
   }
-  .hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(196,164,74,0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #F6F3EE; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
-  .hero-sub { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 48px; line-height: 1.7; }
-  .hero-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
-  .hero-stat { text-align: center; }
-  .hero-stat-val { font-family: 'Playfair Display', serif; font-size: 2rem; color: #F6F3EE; letter-spacing: -0.02em; }
-  .hero-stat-lbl { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  .hero-ridge { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; opacity: 0.5; }
+  .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; position: relative; }
+  .hero-title { font-family: 'Fraunces', serif; font-size: clamp(2.75rem, 8vw, 5rem); color: var(--cream); font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; position: relative; }
+  .hero-title em { font-style: italic; color: var(--gold-lt); }
+  .hero-sub { font-size: 1.05rem; color: #A8AEA4; max-width: 500px; margin: 0 auto 56px; line-height: 1.7; position: relative; font-weight: 300; }
+  .hero-stats { display: flex; gap: 56px; justify-content: center; flex-wrap: wrap; position: relative; }
+  .hero-stat-val { font-family: 'Fraunces', serif; font-size: 2.25rem; color: var(--cream); letter-spacing: -0.02em; font-weight: 500; }
+  .hero-stat-lbl { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .scroll-hint { position: relative; margin-top: 64px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 
-  /* ── SECTION ── */
-  .section { padding: 64px 48px; max-width: 1000px; margin: 0 auto; }
-  .section-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.2; }
-  .section-body { font-size: 1rem; color: var(--mid); line-height: 1.8; max-width: 640px; margin-bottom: 40px; }
-  .divider { height: 1px; background: var(--rule); margin: 0 48px; }
+  /* ── SECTIONS ── */
+  .section { padding: 88px 32px; max-width: 1040px; margin: 0 auto; }
+  .light { background: var(--bg); }
+  .warm  { background: var(--bg-warm); }
+  .dark-sec { background: var(--forest); }
+  .eyebrow { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 600; }
+  .title { font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 500; letter-spacing: -0.025em; margin-bottom: 20px; line-height: 1.1; }
+  .title em { font-style: italic; }
+  .lede { font-size: 1.1rem; color: var(--mid); line-height: 1.8; max-width: 620px; margin-bottom: 48px; font-weight: 300; }
+  .dark-sec .title { color: var(--cream); }
+  .dark-sec .lede { color: #A8AEA4; }
+  .dark-sec .eyebrow { color: var(--gold-lt); }
 
-  /* ── STAT CARDS ── */
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
-  .card { background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 20px 22px; }
-  .card-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .card-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; }
-  .card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+  /* ── BIG NUMBER MOMENT ── */
+  .big-moment { text-align: center; padding: 40px 0; }
+  .big-num { font-family: 'Fraunces', serif; font-size: clamp(3.5rem, 12vw, 7rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1; background: linear-gradient(135deg, var(--gold) 0%, var(--clay) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .big-label { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 12px; }
+
+  /* ── PROGRESS ARC ── */
+  .arc-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 56px; }
+  .arc-caption { font-size: 0.9rem; color: var(--mid); margin-top: 8px; text-align: center; max-width: 400px; }
+
+  /* ── CARDS ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .card { background: var(--cream); border: 1px solid var(--rule); border-radius: 8px; padding: 22px 24px; transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(23,32,28,0.08); }
+  .card-accent { position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+  .card-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .card-value { font-family: 'Fraunces', serif; font-size: 1.9rem; letter-spacing: -0.02em; font-weight: 500; }
+  .card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
 
   /* ── TIMELINE ── */
-  .timeline { position: relative; padding-left: 32px; }
-  .timeline::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 1px; background: var(--rule); }
-  .tl-item { position: relative; margin-bottom: 36px; }
-  .tl-dot { position: absolute; left: -28px; top: 4px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid; }
-  .tl-year { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-  .tl-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-  .tl-body { font-size: 0.875rem; color: var(--mid); line-height: 1.7; }
+  .timeline { position: relative; padding-left: 40px; margin-top: 20px; }
+  .timeline::before { content: ''; position: absolute; left: 9px; top: 12px; bottom: 12px; width: 2px; background: linear-gradient(var(--gold), var(--sage)); }
+  .tl-item { position: relative; margin-bottom: 44px; }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot { position: absolute; left: -36px; top: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); border: 3px solid; display: flex; align-items: center; justify-content: center; }
+  .tl-dot::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .tl-year { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; font-weight: 600; }
+  .tl-title { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .tl-body { font-size: 0.92rem; color: var(--mid); line-height: 1.75; max-width: 560px; }
 
-  /* ── SLIDER SECTION ── */
-  .playground { background: var(--dark); padding: 64px 48px; }
-  .playground .section { max-width: 1000px; padding: 0; }
-  .playground .section-title { color: #F6F3EE; }
-  .playground .section-body { color: #9A9A8E; }
-  .playground .section-eyebrow { color: var(--gold); }
-  .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
-  @media (max-width: 640px) { .sliders { grid-template-columns: 1fr; } }
-  .slider-group { }
-  .slider-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9A8E; margin-bottom: 8px; display: flex; justify-content: space-between; }
-  .slider-val { color: var(--gold); font-weight: 600; }
-  input[type=range] {
-    width: 100%; accent-color: var(--gold); cursor: pointer;
-    height: 4px; border-radius: 2px; background: #333;
-  }
-  .result-box { background: #2C2C2A; border: 1px solid #444; border-radius: 4px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
-  .result-item .r-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9A9A8E; margin-bottom: 6px; }
-  .result-item .r-val { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #F6F3EE; }
-  .result-item .r-sub { font-size: 0.75rem; color: #9A9A8E; margin-top: 4px; }
-  .fire-status { font-size: 0.85rem; margin-top: 16px; padding: 10px 14px; border-radius: 3px; font-weight: 500; }
+  /* ── PLAYGROUND ── */
+  .pg-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; margin-bottom: 20px; }
+  @media (max-width: 680px) { .pg-sliders { grid-template-columns: 1fr; } }
+  .slider-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: #A8AEA4; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; }
+  .slider-val { color: var(--gold-lt); font-weight: 600; font-size: 0.95rem; font-family: 'Fraunces', serif; }
+  .slider-age { color: var(--muted); font-size: 0.65rem; margin-left: 6px; }
+  input[type=range] { -webkit-appearance: none; width: 100%; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.15); cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 3px solid var(--forest); box-shadow: 0 0 0 1px var(--gold); transition: transform 0.15s; }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 3px solid var(--forest); cursor: pointer; }
+
+  .stagger-note { font-size: 0.78rem; color: var(--gold-lt); background: rgba(200,155,60,0.1); border: 1px solid rgba(200,155,60,0.25); border-radius: 6px; padding: 10px 14px; margin-bottom: 32px; text-align: center; }
 
   /* ── BAR CHART ── */
-  .bar-chart { display: flex; gap: 6px; align-items: flex-end; height: 160px; margin-bottom: 8px; }
-  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .bar { width: 100%; border-radius: 2px 2px 0 0; transition: height 0.4s ease; min-height: 2px; }
-  .bar-year { font-size: 9px; color: var(--muted); }
-  .bar-amt { font-size: 8px; color: var(--muted); }
+  .chart-frame { margin-bottom: 12px; }
+  .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bar-stack { height: 180px; display: flex; flex-direction: column-reverse; width: 100%; gap: 1px; justify-content: flex-start; }
+  .bar { width: 100%; border-radius: 1px; transition: height 0.5s cubic-bezier(0.4,0,0.2,1); min-height: 0; }
+  .bar:first-child { border-radius: 0 0 2px 2px; }
+  .bar:last-child { border-radius: 2px 2px 0 0; }
+  .bar-year { font-size: 8px; color: var(--muted); }
+  .chart-legend { display: flex; gap: 18px; margin-bottom: 28px; flex-wrap: wrap; }
+  .leg-item { display: flex; align-items: center; gap: 7px; }
+  .leg-dot { width: 11px; height: 11px; border-radius: 3px; }
+  .leg-txt { font-size: 0.72rem; color: #A8AEA4; }
 
-  /* ── PHASE CARDS ── */
-  .phases { display: grid; gap: 12px; }
-  .phase-card { border-radius: 4px; overflow: hidden; }
-  .phase-head { padding: 16px 20px; display: flex; gap: 16px; align-items: flex-start; }
-  .phase-num { font-family: 'Playfair Display', serif; font-size: 2rem; opacity: 0.3; line-height: 1; flex-shrink: 0; }
-  .phase-meta { }
-  .phase-period { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 3px; }
-  .phase-title { font-size: 1rem; font-weight: 600; }
-  .phase-body { padding: 0 20px 16px 20px; font-size: 0.85rem; line-height: 1.75; color: var(--mid); }
+  /* ── RESULT BOX ── */
+  .result-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 28px; }
+  .r-label { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .r-val { font-family: 'Fraunces', serif; font-size: 2rem; color: var(--cream); font-weight: 500; letter-spacing: -0.02em; }
+  .r-sub { font-size: 0.72rem; color: var(--muted); margin-top: 5px; }
+  .fire-status { font-size: 0.9rem; margin-top: 20px; padding: 14px 18px; border-radius: 8px; font-weight: 500; text-align: center; transition: all 0.3s; }
 
-  /* ── BUDGET ── */
-  .budget-bars { display: grid; gap: 10px; }
-  .bbar-row { }
-  .bbar-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .bbar-name { font-size: 0.8rem; }
-  .bbar-amt { font-size: 0.8rem; color: var(--mid); }
-  .bbar-track { height: 6px; background: var(--rule); border-radius: 3px; }
-  .bbar-fill { height: 6px; border-radius: 3px; }
+  /* ── BUDGET SLIDERS ── */
+  .budget-list { display: grid; gap: 18px; margin-bottom: 8px; }
+  .brow-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .brow-name { font-size: 0.9rem; font-weight: 500; }
+  .brow-amt { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--mid); }
+  .budget-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; cursor: pointer; }
+  .budget-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--cream); border: 2px solid currentColor; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  .budget-total { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 2px solid var(--rule); }
+  .budget-total-label { font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 500; }
+  .budget-total-val { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 500; color: var(--clay); }
+  .budget-fire { font-size: 0.85rem; color: var(--mid); margin-top: 10px; text-align: right; }
+
+  /* ── PHASES ── */
+  .phases { display: grid; gap: 16px; }
+  .phase-card { border-radius: 12px; overflow: hidden; border: 1px solid var(--rule); background: var(--cream); transition: transform 0.25s, box-shadow 0.25s; }
+  .phase-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(23,32,28,0.08); }
+  .phase-head { padding: 22px 26px 18px; display: flex; gap: 20px; align-items: flex-start; }
+  .phase-age { font-family: 'Fraunces', serif; font-size: 2.4rem; line-height: 1; font-weight: 500; flex-shrink: 0; }
+  .phase-period { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+  .phase-title { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 500; letter-spacing: -0.01em; }
+  .phase-body { padding: 0 26px 22px 26px; font-size: 0.9rem; line-height: 1.75; color: var(--mid); }
+
+  /* ── SPENDING CURVE ── */
+  .curve-viz { display: flex; align-items: flex-end; gap: 4px; height: 140px; margin: 32px 0 16px; }
+  .curve-bar { flex: 1; border-radius: 3px 3px 0 0; position: relative; transition: height 0.5s; }
+  .curve-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); }
 
   /* ── FOOTER ── */
-  .footer { background: var(--dark); padding: 40px 48px; text-align: center; }
-  .footer p { font-size: 0.75rem; color: #555; line-height: 1.8; }
+  .footer { background: var(--dark); padding: 56px 32px; text-align: center; }
+  .footer-mark { font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--gold-lt); margin-bottom: 16px; font-style: italic; }
+  .footer p { font-size: 0.72rem; color: #5A6560; line-height: 1.8; }
 
-  /* ── PROGRESS BAR ── */
-  .progress-wrap { margin-bottom: 32px; }
-  .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
-  .progress-track { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
-  .progress-fill { height: 8px; border-radius: 4px; transition: width 0.5s ease; }
-
-  .accent-green { color: var(--green); }
-  .accent-gold { color: var(--gold); }
-  .highlight { background: var(--gold); color: var(--dark); padding: 2px 6px; border-radius: 2px; font-weight: 600; }
+  @media (max-width: 600px) {
+    .hero-stats { gap: 32px; }
+    .section { padding: 64px 24px; }
+  }
 </style>
 </head>
 <body>
 
 <!-- PASSWORD GATE -->
 <div id="gate">
-  <div style="font-size:1.5rem">🏔️</div>
+  <div class="mtn">⛰</div>
   <h1>Sam & Krissy</h1>
-  <p>Our retirement plan — enter password to view</p>
-  <input type="password" id="pw-input" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()" />
+  <p>Our life plan — enter password to continue</p>
+  <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()" autocomplete="off" />
   <button onclick="checkPw()">Enter</button>
   <div id="gate-error">That's not it — try again</div>
 </div>
 
-<!-- MAIN APP -->
 <div id="app">
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-eyebrow">Sam & Krissy Putnam · Woodinville, WA</div>
-    <h1 class="hero-title">Our Road to<br>Freedom</h1>
-    <p class="hero-sub">In 10 years we retire. Here's what we've built, what we're building, and what life looks like on the other side.</p>
+    <svg class="hero-ridge" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,120 L0,80 L180,40 L360,70 L540,20 L720,55 L900,15 L1080,50 L1260,25 L1440,60 L1440,120 Z" fill="#1B2621"/>
+      <path d="M0,120 L0,95 L240,60 L480,85 L720,45 L960,75 L1200,50 L1440,80 L1440,120 Z" fill="#22332B" opacity="0.6"/>
+    </svg>
+    <div class="hero-eyebrow">Sam &amp; Krissy Putnam · Woodinville</div>
+    <h1 class="hero-title">Ten years to<br><em>freedom</em></h1>
+    <p class="hero-sub">This is the story of where we are, the plan that gets us there, and the life waiting on the other side.</p>
     <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val" style="color:var(--gold)">$4.5M</div>
-        <div class="hero-stat-lbl">Projected by 2036</div>
+      <div><div class="hero-stat-val" style="color:var(--gold-lt)">$4.6M</div><div class="hero-stat-lbl">Projected by 2036</div></div>
+      <div><div class="hero-stat-val">2036</div><div class="hero-stat-lbl">The year we're free</div></div>
+      <div><div class="hero-stat-val" style="color:var(--sage)">55 &amp; 58</div><div class="hero-stat-lbl">Our ages then</div></div>
+    </div>
+    <div class="scroll-hint">Scroll to begin ↓</div>
+  </div>
+
+  <!-- CHAPTER 1: WHERE WE ARE -->
+  <div class="light">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter One · Today</div>
+        <h2 class="title">We're already<br><em>halfway home</em></h2>
+        <p class="lede">Years of steady saving have quietly added up. Between our retirement accounts, investments, and the inheritance from Dad, we've built nearly $1.5 million — more than 40% of everything we'll need. The hardest part is already behind us.</p>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">2036</div>
-        <div class="hero-stat-lbl">Target retirement year</div>
+
+      <div class="reveal arc-wrap">
+        <svg width="280" height="160" viewBox="0 0 280 160">
+          <path d="M 30 150 A 110 110 0 0 1 250 150" fill="none" stroke="#D5CDBE" stroke-width="14" stroke-linecap="round"/>
+          <path id="arc-fill" d="M 30 150 A 110 110 0 0 1 250 150" fill="none" stroke="url(#arcgrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="345" stroke-dashoffset="345"/>
+          <defs><linearGradient id="arcgrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C89B3C"/><stop offset="1" stop-color="#5B8C6E"/></linearGradient></defs>
+          <text x="140" y="120" text-anchor="middle" font-family="Fraunces, serif" font-size="38" font-weight="500" fill="#17201C">41%</text>
+          <text x="140" y="142" text-anchor="middle" font-family="Inter" font-size="11" fill="#8B9089" letter-spacing="1">OF THE WAY THERE</text>
+        </svg>
+        <div class="arc-caption">$1.49M saved today, against a target of $3.6M</div>
       </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val" style="color:var(--green)">~55</div>
-        <div class="hero-stat-lbl">Our age at retirement</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">$10,330</div>
-        <div class="hero-stat-lbl">Monthly retirement budget</div>
+
+      <div class="reveal cards">
+        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's Disney 401k</div><div class="card-value" style="color:var(--blue)">$17k</div><div class="card-sub">Just started · adding $23,500/yr</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$423k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest account · adding $23,500/yr</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$38k</div><div class="card-sub">Tax-free · $13,150/yr between us</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Taxable investments</div><div class="card-value" style="color:var(--gold)">$3k</div><div class="card-sub">Small now · grows to $1.3M — our bridge</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Dad's inherited IRA</div><div class="card-value" style="color:var(--purple)">$369k</div><div class="card-sub">Drawing down through 2035</div></div>
       </div>
     </div>
   </div>
 
-  <!-- WHERE WE ARE -->
-  <div class="section">
-    <div class="section-eyebrow">Current state · 2026</div>
-    <h2 class="section-title">Where we are today</h2>
-    <p class="section-body">We've been building quietly for years. Between our 401ks, savings, and investments, we have nearly $1.5 million already working toward our future — more than halfway to our goal.</p>
+  <!-- CHAPTER 2: THE PLAN -->
+  <div class="warm">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Two · The Plan</div>
+        <h2 class="title">We don't need magic.<br>We need <em>consistency</em>.</h2>
+        <p class="lede">There's no risky bet here, no lottery ticket. Just five simple habits repeated for ten years — and the quiet power of compound growth doing the rest.</p>
+      </div>
 
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span>Today · $1.49M</span>
-        <span>FIRE target · $3.6M</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" style="width:41.4%; background:var(--gold)"></div>
-      </div>
-      <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">41% of the way there</div>
-    </div>
-
-    <div class="cards">
-      <div class="card">
-        <div class="card-label">Sam's Disney 401k (SIP)</div>
-        <div class="card-value" style="color:var(--blue)">$17,007</div>
-        <div class="card-sub">Confirmed flowing · maxing $23,500/yr</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Old Microsoft 401k (Sam)</div>
-        <div class="card-value" style="color:var(--blue)">$423k</div>
-        <div class="card-sub">Sitting and compounding — reaches $833k by 2036</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Your Microsoft 401k</div>
-        <div class="card-value" style="color:var(--purple)">$638k</div>
-        <div class="card-sub">Our largest account · maxing $23,500/yr</div>
-      </div>
-      <div class="card">
-        <div class="card-label">HSA (Sam + Krissy)</div>
-        <div class="card-value" style="color:var(--green)">$38k</div>
-        <div class="card-sub">$4,400/yr Sam (self-only) + $8,750/yr Krissy (family) = $13,150/yr combined</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Taxable brokerage</div>
-        <div class="card-value" style="color:var(--gold)">$3k → building</div>
-        <div class="card-sub">Will grow to ~$1.3M by 2036 from LTI + IRA proceeds</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Dad's inherited IRA</div>
-        <div class="card-value" style="color:var(--purple)">$369k</div>
-        <div class="card-sub">Drawing down 2026–2035 · cleared before retirement</div>
-      </div>
-    </div>
-
-    <div class="cards" style="margin-top:8px">
-      <div class="card">
-        <div class="card-label">Our home</div>
-        <div class="card-value">$1.15M</div>
-        <div class="card-sub">Mortgage paid off before we retire</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Combined household income</div>
-        <div class="card-value" style="color:var(--green)">~$375k</div>
-        <div class="card-sub">Sam base + bonus · your Microsoft W2 · plus Sam's LTI equity</div>
+      <div class="reveal timeline">
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--clay); color:var(--clay)"></div><div class="tl-year">First — right now</div><div class="tl-title">Clear every debt</div><div class="tl-body">The credit cards and RV loan — about $53,000 — go first. High-interest debt works against us every single day. Once it's gone, that money starts working for us instead.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $23,500 each. Both HSAs maxed at $13,150 combined. That's nearly $60,000 a year going in before taxes — and Washington takes no state income tax, so every dollar stretches further.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--gold); color:var(--gold)"></div><div class="tl-year">Every year · 2027–2036</div><div class="tl-title">Turn Sam's Disney stock into freedom</div><div class="tl-body">Sam earns around $73,000 a year in Disney shares. We sell them the moment they vest and invest the proceeds — about $55,000 a year after tax — into simple index funds. This becomes the bridge that carries us through our early retirement years.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple); color:var(--purple)"></div><div class="tl-year">Every year · 2026–2035</div><div class="tl-title">Draw down Dad's gift, thoughtfully</div><div class="tl-body">We have ten years to empty the inherited IRA. We take a measured amount each year and reinvest it. By 2035 it's fully distributed — leaving us a clean, simple tax picture heading into retirement.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--green); color:var(--green)"></div><div class="tl-year">Before we retire</div><div class="tl-title">Own our home outright</div><div class="tl-body">The mortgage is gone before we stop working. No house payment in retirement — just the taxes, insurance, and upkeep. That single fact makes everything else easier.</div></div>
       </div>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- THE PLAN -->
-  <div class="section">
-    <div class="section-eyebrow">The plan · 2026–2036</div>
-    <h2 class="section-title">What we're doing to get there</h2>
-    <p class="section-body">We don't need anything dramatic. We just need to stay the course — max our accounts, let the equity vest, and let compound growth do the heavy lifting.</p>
-
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--red); border-color:var(--red)"></div>
-        <div class="tl-year">Right now</div>
-        <div class="tl-title">Pay off the credit cards & RV loan</div>
-        <div class="tl-body">$53k in debt gone — first. High-interest debt is the enemy of compounding. Once cleared, that money works for us instead of against us.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--blue); border-color:var(--blue)"></div>
-        <div class="tl-year">Every year · 2026–2036</div>
-        <div class="tl-title">Max both 401ks + HSAs</div>
-        <div class="tl-body">Sam's 401k: $23,500/yr. Your 401k: $23,500/yr. Sam's HSA: $4,400/yr (self-only plan). Your HSA: $8,750/yr (family plan). Total: $59,650/yr going in tax-free. Washington has no state income tax — every pre-tax dollar saves us 24 cents on the federal dollar.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--gold); border-color:var(--gold)"></div>
-        <div class="tl-year">Every year · 2027–2036</div>
-        <div class="tl-title">Sam's Disney equity vests → taxable brokerage</div>
-        <div class="tl-body">Sam gets ~$73k/year in Disney stock (RSUs). We sell immediately and invest it. After taxes, that's ~$55k/yr going into index funds. Over 10 years with growth, this alone builds to over $700k — and it's our bridge fund for early retirement.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--purple); border-color:var(--purple)"></div>
-        <div class="tl-year">Every year · 2026–2035</div>
-        <div class="tl-title">Draw down Dad's inherited IRA</div>
-        <div class="tl-body">We have 10 years to draw the inherited IRA down to zero. We take a bit each year and invest the after-tax proceeds. By 2035 — one year before we retire — it's gone. No complicated tax situation waiting for us in retirement.</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-dot" style="background:var(--green); border-color:var(--green)"></div>
-        <div class="tl-year">Before 2036</div>
-        <div class="tl-title">Mortgage paid off</div>
-        <div class="tl-body">Our retirement budget assumes no mortgage payment. The house is ours free and clear. Only property tax, insurance, and maintenance — budgeted at $1,200/mo total.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- PROJECTION PLAYGROUND -->
-  <div class="playground">
-    <div class="section" style="padding: 0 0 0 0; max-width:1000px; margin: 0 auto;">
-      <div class="section-eyebrow" style="color:var(--gold)">Play with the numbers</div>
-      <h2 class="section-title" style="color:#F6F3EE">What if?</h2>
-      <p class="section-body" style="color:#9A9A8E">Move the sliders and watch what changes. This is our plan — see how different assumptions affect where we land.</p>
-
-      <div class="sliders">
-        <div class="slider-group">
-          <div class="slider-label">Return rate <span class="slider-val" id="lbl-return">7%</span></div>
-          <input type="range" id="sl-return" min="4" max="10" value="7" step="0.5" oninput="update()">
-        </div>
-        <div class="slider-group">
-          <div class="slider-label">Retire year <span class="slider-val" id="lbl-year">2036</span></div>
-          <input type="range" id="sl-year" min="2033" max="2040" value="2036" step="1" oninput="update()">
-        </div>
-        <div class="slider-group">
-          <div class="slider-label">Monthly spend in retirement <span class="slider-val" id="lbl-spend">$10,330</span></div>
-          <input type="range" id="sl-spend" min="8000" max="15000" value="10330" step="100" oninput="update()">
-        </div>
-        <div class="slider-group">
-          <div class="slider-label">Social Security start age <span class="slider-val" id="lbl-ss">70</span></div>
-          <input type="range" id="sl-ss" min="62" max="70" value="70" step="1" oninput="update()">
-        </div>
+  <!-- CHAPTER 3: PLAYGROUND -->
+  <div class="dark-sec">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Three · What If</div>
+        <h2 class="title" style="color:var(--cream)">Play with <em>our future</em></h2>
+        <p class="lede">Nothing here is locked in stone. Move the sliders and watch how our choices shape where we land. What if the market's kinder? What if one of us steps away earlier?</p>
       </div>
 
-      <!-- Bar chart -->
-      <div class="bar-chart" id="bar-chart"></div>
-      <div style="display:flex; gap:16px; margin-bottom:24px;">
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--blue);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">401ks</span></div>
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--gold);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">Taxable</span></div>
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--green);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">HSA</span></div>
-      </div>
-
-      <div class="result-box">
-        <div class="result-item">
-          <div class="r-label">Portfolio at retirement</div>
-          <div class="r-val" id="r-portfolio">$4.51M</div>
-          <div class="r-sub" id="r-portfolio-sub">at 7% · retiring 2036</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">Annual income (4%)</div>
-          <div class="r-val" id="r-income">$180k</div>
-          <div class="r-sub">what the portfolio generates</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">vs. our budget</div>
-          <div class="r-val" id="r-vs" style="color:var(--green)">+$56k</div>
-          <div class="r-sub" id="r-vs-sub">cushion per year</div>
-        </div>
-        <div class="result-item">
-          <div class="r-label">FIRE number needed</div>
-          <div class="r-val" id="r-fire">$3.1M</div>
-          <div class="r-sub" id="r-fire-sub">25× annual spending</div>
-        </div>
-      </div>
-      <div class="fire-status" id="fire-status" style="background:#6B9E7A22; color:var(--green); border:1px solid var(--green);">
-        ✓ On track — projected portfolio exceeds FIRE number
-      </div>
-    </div>
-  </div>
-
-  <!-- RETIREMENT LIFE -->
-  <div class="section">
-    <div class="section-eyebrow">At retirement · 2036</div>
-    <h2 class="section-title">What retirement looks like</h2>
-    <p class="section-body">The first years of retirement are about freedom, not frugality. We've planned a life that's genuinely comfortable — with room to travel, enjoy what we've worked for, and still sleep well at night.</p>
-
-    <div style="margin-bottom:40px">
-      <div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Our monthly retirement budget</div>
-      <div class="budget-bars" id="budget-bars"></div>
-      <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:12px;border-top:2px solid var(--rule);">
-        <span style="font-weight:600">Total monthly</span>
-        <span style="font-family:'Playfair Display',serif;font-size:1.2rem">$10,330</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- PHASES OF RETIREMENT -->
-  <div class="section">
-    <div class="section-eyebrow">Through retirement</div>
-    <h2 class="section-title">How our money works<br>over time</h2>
-    <p class="section-body">Retirement isn't one thing — it evolves. Here's how we sequence our accounts to minimize taxes and maximize what we keep.</p>
-
-    <div class="phases">
-      <div class="phase-card" style="background:var(--gold)22; border:1px solid var(--gold)44;">
-        <div class="phase-head" style="border-left:4px solid var(--gold)">
-          <div class="phase-num" style="color:var(--gold)">01</div>
-          <div class="phase-meta">
-            <div class="phase-period" style="color:var(--gold)">2036–2041 · Ages 55–59½</div>
-            <div class="phase-title">The bridge years</div>
+      <div class="reveal">
+        <div class="pg-sliders">
+          <div>
+            <div class="slider-label"><span>Market return</span><span class="slider-val" id="lbl-return">7%</span></div>
+            <input type="range" id="sl-return" min="4" max="10" value="7" step="0.5" oninput="update()">
+          </div>
+          <div>
+            <div class="slider-label"><span>Monthly spending</span><span class="slider-val" id="lbl-spend">$10,330</span></div>
+            <input type="range" id="sl-spend" min="7000" max="16000" value="10330" step="100" oninput="update()">
+          </div>
+          <div>
+            <div class="slider-label"><span>Sam retires<span class="slider-age" id="age-sam">age 55</span></span><span class="slider-val" id="lbl-sam">2036</span></div>
+            <input type="range" id="sl-sam" min="2031" max="2041" value="2036" step="1" oninput="update()">
+          </div>
+          <div>
+            <div class="slider-label"><span>Krissy retires<span class="slider-age" id="age-krissy">age 58</span></span><span class="slider-val" id="lbl-krissy">2036</span></div>
+            <input type="range" id="sl-krissy" min="2031" max="2041" value="2036" step="1" oninput="update()">
           </div>
         </div>
-        <div class="phase-body">We retire 4–5 years before we can touch our 401ks penalty-free. That's why we built the taxable brokerage (~$1.3M). We live off that, pay low capital gains rates instead of income tax rates, and let the 401ks keep growing untouched. HSA covers all our medical costs tax-free.</div>
-      </div>
+        <div class="stagger-note" id="stagger-note">Krissy is 3 years older — when we retire at the same time, she's 58 and Sam is 55.</div>
 
-      <div class="phase-card" style="background:var(--blue)22; border:1px solid var(--blue)44;">
-        <div class="phase-head" style="border-left:4px solid var(--blue)">
-          <div class="phase-num" style="color:var(--blue)">02</div>
-          <div class="phase-meta">
-            <div class="phase-period" style="color:var(--blue)">2041–2051 · Ages 59½–70</div>
-            <div class="phase-title">Full access — smart withdrawals</div>
-          </div>
+        <div class="chart-frame">
+          <div class="bar-chart" id="bar-chart"></div>
         </div>
-        <div class="phase-body">Now everything is open. We withdraw in the most tax-efficient order: taxable accounts first (low capital gains rates), then carefully timed 401k withdrawals. We also start converting 401k money to Roth in low-income years — paying tax now at 12–22% to avoid higher rates later when Social Security kicks in.</div>
-      </div>
+        <div class="chart-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--blue)"></div><span class="leg-txt">401ks</span></div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--gold)"></div><span class="leg-txt">Taxable bridge fund</span></div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--sage)"></div><span class="leg-txt">Health savings</span></div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--purple)"></div><span class="leg-txt">Inherited IRA</span></div>
+        </div>
 
-      <div class="phase-card" style="background:var(--green)22; border:1px solid var(--green)44;">
-        <div class="phase-head" style="border-left:4px solid var(--green)">
-          <div class="phase-num" style="color:var(--green)">03</div>
-          <div class="phase-meta">
-            <div class="phase-period" style="color:var(--green)">2051+ · Age 70+</div>
-            <div class="phase-title">Social Security + Medicare</div>
-          </div>
+        <div class="result-box">
+          <div><div class="r-label">Portfolio when we retire</div><div class="r-val" id="r-portfolio">$4.62M</div><div class="r-sub" id="r-portfolio-sub">at 7% growth</div></div>
+          <div><div class="r-label">Yearly income it makes</div><div class="r-val" id="r-income">$185k</div><div class="r-sub">at a safe 4% withdrawal</div></div>
+          <div><div class="r-label">Versus our spending</div><div class="r-val" id="r-vs" style="color:var(--sage)">+$61k</div><div class="r-sub" id="r-vs-sub">cushion every year</div></div>
+          <div><div class="r-label">What we actually need</div><div class="r-val" id="r-fire">$3.1M</div><div class="r-sub" id="r-fire-sub">25× yearly spending</div></div>
         </div>
-        <div class="phase-body">By waiting until 70 to claim Social Security, we maximize our guaranteed lifetime income — permanently. Medicare eliminates the ACA premium we've been paying. Our expenses naturally start declining too. This is the most financially stable phase of retirement.</div>
-      </div>
-
-      <div class="phase-card" style="background:var(--purple)22; border:1px solid var(--purple)44;">
-        <div class="phase-head" style="border-left:4px solid var(--purple)">
-          <div class="phase-num" style="color:var(--purple)">04</div>
-          <div class="phase-meta">
-            <div class="phase-period" style="color:var(--purple)">2058+ · Age 73+</div>
-            <div class="phase-title">Legacy & simplification</div>
-          </div>
-        </div>
-        <div class="phase-body">Required distributions from our 401ks begin at 73. The Roth conversions we did in phase 2 reduce how much we're forced to take. Travel has slowed, spending is lower, and the focus shifts to what we leave behind for Noah, Sophia, and Tobin.</div>
+        <div class="fire-status" id="fire-status">✓ On track</div>
       </div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <!-- CHAPTER 4: RETIREMENT LIFE -->
+  <div class="light">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Four · The Life</div>
+        <h2 class="title">What retirement<br><em>feels like</em></h2>
+        <p class="lede">These first years aren't about pinching pennies — they're about freedom. Travel a few times a year. Time with the kids. Slow mornings. Here's the life we're building, and you can shape it. Drag any line to see how it changes what we need.</p>
+      </div>
 
-  <!-- SPENDING CURVE -->
-  <div class="section">
-    <div class="section-eyebrow">The spending curve</div>
-    <h2 class="section-title">Spend more early,<br>less later</h2>
-    <p class="section-body">Research shows retirees spend the most in their active early years, then naturally slow down. We've planned for this — which means our FIRE number is actually conservative.</p>
-    <div class="cards">
-      <div class="card" style="border-left:3px solid var(--gold)">
-        <div class="card-label">Go-go years · 55–70</div>
-        <div class="card-value" style="color:var(--gold)">$124–145k/yr</div>
-        <div class="card-sub">Full travel budget · active lifestyle · 3–4 trips/year</div>
-      </div>
-      <div class="card" style="border-left:3px solid var(--blue)">
-        <div class="card-label">Slow-go years · 70–80</div>
-        <div class="card-value" style="color:var(--blue)">$95–110k/yr</div>
-        <div class="card-sub">Travel moderates · lower discretionary · kids fully independent</div>
-      </div>
-      <div class="card" style="border-left:3px solid var(--purple)">
-        <div class="card-label">No-go years · 80+</div>
-        <div class="card-value" style="color:var(--purple)">$80–100k/yr</div>
-        <div class="card-sub">Healthcare rises · travel minimal · Social Security + Medicare cover more</div>
+      <div class="reveal">
+        <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:24px;">Our monthly life · drag to adjust</div>
+        <div class="budget-list" id="budget-list"></div>
+        <div class="budget-total">
+          <span class="budget-total-label">Every month</span>
+          <span class="budget-total-val" id="budget-total">$10,330</span>
+        </div>
+        <div class="budget-fire" id="budget-fire">That's $124k a year — needing a $3.1M nest egg</div>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- CHAPTER 5: THROUGH RETIREMENT -->
+  <div class="warm">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Five · The Journey</div>
+        <h2 class="title">How the money<br>carries us <em>through</em></h2>
+        <p class="lede">Retirement isn't one long chapter — it unfolds in stages. Each one draws from different accounts in the smartest order, keeping taxes low and our savings working as long as possible.</p>
+      </div>
+
+      <div class="reveal phases">
+        <div class="phase-card">
+          <div class="phase-head"><div class="phase-age" style="color:var(--gold)">55<span style="font-size:1rem">–59½</span></div><div><div class="phase-period" style="color:var(--gold)">2036–2041 · The bridge</div><div class="phase-title">Living on the bridge fund</div></div></div>
+          <div class="phase-body">We retire a few years before we can touch our 401ks without penalty. That's exactly why we built the taxable investment account — around $1.3 million. We live off it, paying low capital-gains rates instead of income tax, while our retirement accounts keep growing untouched. Our health savings covers medical costs, tax-free.</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><div class="phase-age" style="color:var(--blue)">59½<span style="font-size:1rem">–70</span></div><div><div class="phase-period" style="color:var(--blue)">2041–2051 · Full access</div><div class="phase-title">Everything unlocks</div></div></div>
+          <div class="phase-body">Now every account is open to us. We withdraw in the most tax-efficient order and quietly move money from our 401ks into Roth accounts during these lower-income years — paying a little tax now to avoid much more later. This is the invisible work that pays off for decades.</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><div class="phase-age" style="color:var(--green)">70<span style="font-size:1rem">+</span></div><div><div class="phase-period" style="color:var(--green)">2051+ · Guaranteed income</div><div class="phase-title">Social Security &amp; Medicare</div></div></div>
+          <div class="phase-body">By waiting until 70, we lock in the largest possible Social Security checks — for life. Medicare replaces the health insurance we'd been buying ourselves. Our spending naturally settles down. This is the steadiest, most secure stretch of the whole journey.</div>
+        </div>
+        <div class="phase-card">
+          <div class="phase-head"><div class="phase-age" style="color:var(--purple)">73<span style="font-size:1rem">+</span></div><div><div class="phase-period" style="color:var(--purple)">2054+ · Legacy</div><div class="phase-title">What we leave behind</div></div></div>
+          <div class="phase-body">The government requires us to start drawing from our 401ks at 73 — but the Roth conversions we did years earlier keep those forced withdrawals small. By now, travel has slowed and life is simpler. The focus turns to what we pass on to Noah, Sophia, and Tobin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 6: SPENDING CURVE -->
+  <div class="dark-sec">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">One Last Thing</div>
+        <h2 class="title" style="color:var(--cream)">We'll spend the most<br>when we're <em>youngest</em></h2>
+        <p class="lede">People travel and adventure most in their first retirement years, then naturally slow down. We've planned for that curve — which quietly means our target is already a little conservative.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="curve-viz">
+          <div class="curve-bar" style="height:100%; background:linear-gradient(var(--gold-lt),var(--gold))"></div>
+          <div class="curve-bar" style="height:98%; background:linear-gradient(var(--gold-lt),var(--gold))"></div>
+          <div class="curve-bar" style="height:95%; background:linear-gradient(var(--gold-lt),var(--gold))"></div>
+          <div class="curve-bar" style="height:88%; background:linear-gradient(var(--sage),var(--green))"></div>
+          <div class="curve-bar" style="height:78%; background:linear-gradient(var(--sage),var(--green))"></div>
+          <div class="curve-bar" style="height:70%; background:linear-gradient(var(--sage),var(--green))"></div>
+          <div class="curve-bar" style="height:66%; background:linear-gradient(var(--purple),#6B5C86)"></div>
+          <div class="curve-bar" style="height:68%; background:linear-gradient(var(--purple),#6B5C86)"></div>
+          <div class="curve-bar" style="height:72%; background:linear-gradient(var(--purple),#6B5C86)"></div>
+        </div>
+        <div class="curve-labels"><span>55</span><span>Go-go years</span><span>70</span><span>Slow-go</span><span>80</span><span>No-go</span><span>90+</span></div>
+        <div class="cards" style="margin-top:40px;">
+          <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Go-go · 55–70</div><div class="card-value" style="color:var(--gold)">$124–145k</div><div class="card-sub">Full travel, active, adventurous</div></div>
+          <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Slow-go · 70–80</div><div class="card-value" style="color:var(--green)">$95–110k</div><div class="card-sub">Travel eases, life simplifies</div></div>
+          <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">No-go · 80+</div><div class="card-value" style="color:var(--purple)">$80–100k</div><div class="card-sub">Social Security &amp; Medicare cover more</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="footer">
-    <p>Built with love for Krissy · Updated July 2026 · sammysite.com/fire</p>
-    <p style="margin-top:8px">All projections assume 7% nominal return. Past performance does not guarantee future results.<br>This is a personal planning tool, not financial advice.</p>
+    <div class="footer-mark">Here's to the life we're building.</div>
+    <p>Built with love · Updated July 2026 · sammysite.com/fire</p>
+    <p style="margin-top:8px">Projections assume steady returns and are meant to guide, not guarantee.<br>A living plan — we'll revisit it together as life unfolds.</p>
   </div>
 
-</div><!-- end app -->
+</div>
 
 <script>
-// ── PASSWORD ──
 function checkPw() {
   const val = document.getElementById('pw-input').value.toLowerCase().trim();
-  // simple hash check — password: ellaisadog
   if (val === atob('ZWxsYWlzYWRvZw==')) {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('app').style.display = 'block';
@@ -486,58 +429,20 @@ function checkPw() {
   }
 }
 
-// ── BUDGET BARS ──
-const BUDGET = [
-  { name: "Travel (3–4 trips/yr)",    amt: 2333, color: "#C4A44A" },
-  { name: "Healthcare (ACA)",          amt: 1900, color: "#9A7FA6" },
-  { name: "Housing (taxes, utils)",    amt: 1650, color: "#6B9E7A" },
-  { name: "Food (groceries + dining)", amt: 1400, color: "#C4956A" },
-  { name: "Transportation",            amt: 1325, color: "#6A8FA6" },
-  { name: "Giving & family",           amt: 700,  color: "#A67FA6" },
-  { name: "Personal & hobbies",        amt: 775,  color: "#7A9E7A" },
-  { name: "Financial & insurance",     amt: 250,  color: "#9A9A8E" },
+// Ages: Sam turns 55 in 2036 (born ~1981), Krissy 3 yrs older (58 in 2036)
+const SAM_AGE_BASE = 55 - 2036;    // add year to get age
+const KRISSY_AGE_BASE = 58 - 2036;
+
+let BUDGET = [
+  { name: "Travel · a few trips a year", amt: 2333, color: "#C89B3C", min: 0, max: 5000 },
+  { name: "Healthcare",                   amt: 1900, color: "#8B7BA6", min: 500, max: 3500 },
+  { name: "Home · taxes, utilities, upkeep", amt: 1650, color: "#5B8C6E", min: 800, max: 3000 },
+  { name: "Food · groceries & dining out", amt: 1400, color: "#C07B54", min: 600, max: 3000 },
+  { name: "Getting around",               amt: 1325, color: "#5E8299", min: 400, max: 2500 },
+  { name: "Personal & hobbies",           amt: 775,  color: "#8AAB8E", min: 200, max: 2000 },
+  { name: "Giving & family",              amt: 700,  color: "#8B7BA6", min: 0, max: 2500 },
+  { name: "Insurance & the boring stuff", amt: 250,  color: "#8B9089", min: 100, max: 1000 },
 ];
-const TOTAL_BUDGET = BUDGET.reduce((s,b) => s + b.amt, 0);
-
-function initBudget() {
-  const el = document.getElementById('budget-bars');
-  el.innerHTML = BUDGET.map(b => `
-    <div class="bbar-row">
-      <div class="bbar-top">
-        <span class="bbar-name">${b.name}</span>
-        <span class="bbar-amt">$${b.amt.toLocaleString()}/mo</span>
-      </div>
-      <div class="bbar-track">
-        <div class="bbar-fill" style="width:${(b.amt/TOTAL_BUDGET*100).toFixed(1)}%; background:${b.color}"></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ── PROJECTION ENGINE ──
-function project(rate, retireYear) {
-  let samDisney = 17007, samMsft = 423373, krissy = 637888;
-  let hsa = 38470, taxable = 3375, ira = 369196;
-  const r = 1 + rate / 100;
-  const LTI = 72870 * 0.76;
-  const rows = [];
-  for (let y = 0; y < 15; y++) {
-    const year = 2026 + y;
-    if (year > retireYear) { rows.push({year, total: rows[rows.length-1]?.total || 0, samDisney, samMsft, krissy, hsa, taxable}); continue; }
-    const iraLeft = Math.max(1, 2035 - year + 1);
-    const iraDist = year <= 2035 ? ira / iraLeft : 0;
-    const lti = year >= 2027 ? LTI : 0;
-    samDisney = samDisney * r + 23500;
-    samMsft   = samMsft   * r;
-    krissy    = krissy    * r + 23500;
-    hsa       = hsa       * r + 13150; // Sam $4,400 self-only + Krissy $8,750 family
-    taxable   = taxable   * r + iraDist * 0.76 + lti;
-    ira       = Math.max(0, (ira - iraDist) * r);
-    const total = samDisney + samMsft + krissy + hsa + taxable;
-    rows.push({ year, total, samDisney, samMsft, krissy, hsa, taxable });
-  }
-  return rows;
-}
 
 function fmt(n) {
   if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
@@ -545,19 +450,64 @@ function fmt(n) {
   return '$' + Math.round(n);
 }
 
+function project(rate, samRetire, krissyRetire) {
+  let samDisney = 17007, samMsft = 423373, krissy = 637888;
+  let hsa = 38470, taxable = 3375, ira = 369196;
+  const r = 1 + rate / 100;
+  const LTI = 72870 * 0.76;
+  const rows = [];
+  const lastRetire = Math.max(samRetire, krissyRetire);
+  for (let y = 0; y < 15; y++) {
+    const year = 2026 + y;
+    const samWorks = year <= samRetire;
+    const krissyWorks = year <= krissyRetire;
+    const iraLeft = Math.max(1, 2035 - year + 1);
+    const iraDist = year <= 2035 ? ira / iraLeft : 0;
+    const lti = (year >= 2027 && samWorks) ? LTI : 0;
+    samDisney = samDisney * r + (samWorks ? 23500 : 0);
+    samMsft   = samMsft   * r;
+    krissy    = krissy    * r + (krissyWorks ? 23500 : 0);
+    hsa       = hsa * r + (samWorks ? 4400 : 0) + (krissyWorks ? 8750 : 0);
+    taxable   = taxable * r + iraDist * 0.76 + lti;
+    ira       = Math.max(0, (ira - iraDist) * r);
+    rows.push({ year, samDisney, samMsft, krissy, hsa, taxable, ira,
+      total: samDisney + samMsft + krissy + hsa + taxable, retired: year >= lastRetire });
+    if (year >= lastRetire) {
+      // freeze contributions but let grow for chart continuity up to retirement year
+    }
+  }
+  return rows;
+}
+
 function update() {
-  const rate     = parseFloat(document.getElementById('sl-return').value);
-  const retireYr = parseInt(document.getElementById('sl-year').value);
-  const spend    = parseInt(document.getElementById('sl-spend').value);
-  const ssAge    = parseInt(document.getElementById('sl-ss').value);
+  const rate = parseFloat(document.getElementById('sl-return').value);
+  const spend = parseInt(document.getElementById('sl-spend').value);
+  const samRetire = parseInt(document.getElementById('sl-sam').value);
+  const krissyRetire = parseInt(document.getElementById('sl-krissy').value);
+
+  const samAge = SAM_AGE_BASE + samRetire;
+  const krissyAge = KRISSY_AGE_BASE + krissyRetire;
 
   document.getElementById('lbl-return').textContent = rate + '%';
-  document.getElementById('lbl-year').textContent = retireYr;
   document.getElementById('lbl-spend').textContent = '$' + spend.toLocaleString();
-  document.getElementById('lbl-ss').textContent = ssAge;
+  document.getElementById('lbl-sam').textContent = samRetire;
+  document.getElementById('lbl-krissy').textContent = krissyRetire;
+  document.getElementById('age-sam').textContent = 'age ' + samAge;
+  document.getElementById('age-krissy').textContent = 'age ' + krissyAge;
 
-  const rows = project(rate, retireYr);
-  const retRow = rows.find(r => r.year === retireYr) || rows[rows.length-1];
+  // Stagger note
+  const note = document.getElementById('stagger-note');
+  if (samRetire === krissyRetire) {
+    note.textContent = `Retiring together in ${samRetire} — Sam at ${samAge}, Krissy at ${krissyAge}.`;
+  } else if (krissyRetire < samRetire) {
+    note.textContent = `Krissy steps away first in ${krissyRetire} (age ${krissyAge}), Sam works until ${samRetire} (age ${samAge}). Those extra working years add a real cushion.`;
+  } else {
+    note.textContent = `Sam retires first in ${samRetire} (age ${samAge}), Krissy works until ${krissyRetire} (age ${krissyAge}).`;
+  }
+
+  const lastRetire = Math.max(samRetire, krissyRetire);
+  const rows = project(rate, samRetire, krissyRetire);
+  const retRow = rows.find(r => r.year === lastRetire) || rows[rows.length - 1];
   const portfolio = retRow.total;
   const annualIncome = portfolio * 0.04;
   const annualSpend = spend * 12;
@@ -566,52 +516,91 @@ function update() {
   const onTrack = portfolio >= fireNum;
 
   document.getElementById('r-portfolio').textContent = fmt(portfolio);
-  document.getElementById('r-portfolio-sub').textContent = `at ${rate}% · retiring ${retireYr}`;
+  document.getElementById('r-portfolio-sub').textContent = `at ${rate}% · retiring ${lastRetire}`;
   document.getElementById('r-income').textContent = fmt(annualIncome);
-  document.getElementById('r-vs').textContent = (cushion >= 0 ? '+' : '') + fmt(cushion);
-  document.getElementById('r-vs').style.color = cushion >= 0 ? 'var(--green)' : 'var(--red)';
-  document.getElementById('r-vs-sub').textContent = cushion >= 0 ? 'cushion per year' : 'shortfall per year';
+  document.getElementById('r-vs').textContent = (cushion >= 0 ? '+' : '−') + fmt(Math.abs(cushion));
+  document.getElementById('r-vs').style.color = cushion >= 0 ? 'var(--sage)' : 'var(--clay)';
+  document.getElementById('r-vs-sub').textContent = cushion >= 0 ? 'cushion every year' : 'short every year';
   document.getElementById('r-fire').textContent = fmt(fireNum);
-  document.getElementById('r-fire-sub').textContent = '25× $' + Math.round(annualSpend/1000) + 'k annual spend';
+  document.getElementById('r-fire-sub').textContent = '25× ' + fmt(annualSpend) + ' a year';
 
   const status = document.getElementById('fire-status');
   if (onTrack) {
-    status.style.background = 'var(--green)22';
-    status.style.color = 'var(--green)';
-    status.style.border = '1px solid var(--green)';
-    status.textContent = `✓ On track — projected ${fmt(portfolio)} exceeds FIRE number of ${fmt(fireNum)}`;
+    status.style.background = 'rgba(91,140,110,0.15)';
+    status.style.color = 'var(--sage)';
+    status.style.border = '1px solid rgba(91,140,110,0.4)';
+    status.textContent = `✓ On track — ${fmt(portfolio)} comfortably clears the ${fmt(fireNum)} we need`;
   } else {
-    status.style.background = 'var(--red)22';
-    status.style.color = 'var(--red)';
-    status.style.border = '1px solid var(--red)';
-    status.textContent = `⚠ Gap of ${fmt(fireNum - portfolio)} — try adjusting retirement year or spending`;
+    status.style.background = 'rgba(192,123,84,0.15)';
+    status.style.color = 'var(--clay)';
+    status.style.border = '1px solid rgba(192,123,84,0.4)';
+    status.textContent = `A gap of ${fmt(fireNum - portfolio)} — try working a little longer or trimming spending`;
   }
 
-  // Bar chart
-  const chartRows = rows.filter(r => r.year <= retireYr);
+  // Bar chart up to last retirement year
+  const chartRows = rows.filter(r => r.year <= lastRetire);
   const maxTotal = Math.max(...chartRows.map(r => r.total));
-  const chartEl = document.getElementById('bar-chart');
-  chartEl.innerHTML = chartRows.map(r => {
-    const h = Math.max(4, (r.total / maxTotal) * 140);
+  document.getElementById('bar-chart').innerHTML = chartRows.map(r => {
     const ret401k = r.samDisney + r.samMsft + r.krissy;
-    const h401k = (ret401k / maxTotal) * 140;
-    const htax  = (r.taxable / maxTotal) * 140;
-    const hhsa  = (r.hsa / maxTotal) * 140;
-    const hit = r.total >= fireNum;
+    const h = v => (v / maxTotal) * 180;
     return `<div class="bar-wrap">
-      <div style="height:140px;display:flex;flex-direction:column-reverse;width:100%;gap:1px;">
-        <div class="bar" style="height:${h401k}px;background:${hit?'#6B9E7A':'#6A8FA6'};"></div>
-        <div class="bar" style="height:${htax}px;background:#C4A44A;"></div>
-        <div class="bar" style="height:${hhsa}px;background:#6B9E7A80;"></div>
+      <div class="bar-stack">
+        <div class="bar" style="height:${h(ret401k)}px;background:var(--blue);"></div>
+        <div class="bar" style="height:${h(r.taxable)}px;background:var(--gold);"></div>
+        <div class="bar" style="height:${h(r.hsa)}px;background:var(--sage);"></div>
+        <div class="bar" style="height:${h(Math.max(0,r.ira))}px;background:var(--purple);"></div>
       </div>
       <div class="bar-year">${r.year}</div>
     </div>`;
   }).join('');
 }
 
+function renderBudget() {
+  document.getElementById('budget-list').innerHTML = BUDGET.map((b, i) => `
+    <div class="brow">
+      <div class="brow-top">
+        <span class="brow-name">${b.name}</span>
+        <span class="brow-amt" id="bamt-${i}">$${b.amt.toLocaleString()}/mo</span>
+      </div>
+      <input type="range" class="budget-slider" style="color:${b.color}; background:linear-gradient(to right, ${b.color} 0%, ${b.color} ${((b.amt-b.min)/(b.max-b.min)*100)}%, var(--rule) ${((b.amt-b.min)/(b.max-b.min)*100)}%, var(--rule) 100%);"
+        min="${b.min}" max="${b.max}" value="${b.amt}" step="25"
+        oninput="updateBudget(${i}, this)">
+    </div>
+  `).join('');
+  updateBudgetTotal();
+}
+
+function updateBudget(i, el) {
+  BUDGET[i].amt = parseInt(el.value);
+  const b = BUDGET[i];
+  const pct = (b.amt - b.min) / (b.max - b.min) * 100;
+  el.style.background = `linear-gradient(to right, ${b.color} 0%, ${b.color} ${pct}%, var(--rule) ${pct}%, var(--rule) 100%)`;
+  document.getElementById('bamt-' + i).textContent = '$' + b.amt.toLocaleString() + '/mo';
+  updateBudgetTotal();
+}
+
+function updateBudgetTotal() {
+  const total = BUDGET.reduce((s, b) => s + b.amt, 0);
+  const annual = total * 12;
+  const fire = annual * 25;
+  document.getElementById('budget-total').textContent = '$' + total.toLocaleString();
+  document.getElementById('budget-fire').textContent = `That's ${fmt(annual)} a year — needing a ${fmt(fire)} nest egg`;
+}
+
 function init() {
-  initBudget();
+  renderBudget();
   update();
+  // Animate arc
+  setTimeout(() => {
+    const arc = document.getElementById('arc-fill');
+    if (arc) arc.style.transition = 'stroke-dashoffset 1.6s ease';
+    if (arc) arc.style.strokeDashoffset = 345 - (345 * 0.414);
+  }, 400);
+  // Scroll reveal
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 }
 </script>
 </body>
