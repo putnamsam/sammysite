@@ -145,6 +145,11 @@
   .toggle-knob { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: var(--cream); border-radius: 50%; transition: transform 0.25s; }
   .toggle-knob.on { transform: translateX(20px); }
 
+  .lti-callout { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 32px; padding: 16px 20px; background: linear-gradient(135deg, rgba(200,155,60,0.12), rgba(200,155,60,0.04)); border: 1px solid rgba(200,155,60,0.3); border-radius: 8px; }
+  .lti-callout-icon { color: var(--gold); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .lti-callout span:last-child { font-size: 0.85rem; color: #C3C8BE; line-height: 1.65; }
+  .lti-callout strong { color: var(--gold-lt); font-weight: 600; }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -322,6 +327,10 @@
             <span class="toggle-knob" id="lti-knob"></span>
           </div>
           <span class="toggle-label" id="lti-label">Investing Sam's Disney stock (LTI) — <strong>off</strong></span>
+        </div>
+        <div class="lti-callout">
+          <span class="lti-callout-icon">✦</span>
+          <span>Right now we're enjoying Sam's Disney stock along the way. But it's our hidden lever — flip it on and watch what happens. Investing it would add around <strong>$765k</strong> by 2036, more than covering our early-retirement years and opening the door to retiring sooner. Always there if we want it.</span>
         </div>
 
         <div class="chart-frame">
