@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Future · Sam & Krissy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:     #F6F3EE;
+    --dark:   #1E1E1C;
+    --mid:    #5C5C4A;
+    --muted:  #9A9A8E;
+    --rule:   #D4D0C8;
+    --paper:  #EDEAE3;
+    --gold:   #C4A44A;
+    --green:  #6B9E7A;
+    --blue:   #6A8FA6;
+    --purple: #9A7FA6;
+    --red:    #C47A6A;
+  }
+
+  body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--dark); }
+
+  /* ── PASSWORD GATE ── */
+  #gate {
+    position: fixed; inset: 0; background: var(--dark);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; flex-direction: column; gap: 24px;
+  }
+  #gate h1 { font-family: 'Playfair Display', serif; color: #F6F3EE; font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; }
+  #gate p  { color: #9A9A8E; font-size: 0.875rem; }
+  #gate input {
+    background: #2C2C2A; border: 1px solid #444; color: #F6F3EE;
+    padding: 12px 20px; border-radius: 4px; font-size: 1rem;
+    font-family: 'Inter', sans-serif; width: 260px; text-align: center;
+    letter-spacing: 0.1em;
+  }
+  #gate input:focus { outline: none; border-color: var(--gold); }
+  #gate button {
+    background: var(--gold); color: var(--dark); border: none;
+    padding: 12px 32px; border-radius: 4px; font-size: 0.875rem;
+    font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  #gate button:hover { opacity: 0.9; }
+  #gate-error { color: var(--red); font-size: 0.8rem; display: none; }
+
+  /* ── MAIN CONTENT ── */
+  #app { display: none; background: var(--bg); min-height: 100vh; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dark); padding: 80px 48px 64px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(196,164,74,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); color: #F6F3EE; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .hero-sub { font-size: 1rem; color: var(--muted); max-width: 520px; margin: 0 auto 48px; line-height: 1.7; }
+  .hero-stats { display: flex; gap: 48px; justify-content: center; flex-wrap: wrap; }
+  .hero-stat { text-align: center; }
+  .hero-stat-val { font-family: 'Playfair Display', serif; font-size: 2rem; color: #F6F3EE; letter-spacing: -0.02em; }
+  .hero-stat-lbl { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  /* ── SECTION ── */
+  .section { padding: 64px 48px; max-width: 1000px; margin: 0 auto; }
+  .section-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.2; }
+  .section-body { font-size: 1rem; color: var(--mid); line-height: 1.8; max-width: 640px; margin-bottom: 40px; }
+  .divider { height: 1px; background: var(--rule); margin: 0 48px; }
+
+  /* ── STAT CARDS ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .card { background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 20px 22px; }
+  .card-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .card-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; }
+  .card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 1px; background: var(--rule); }
+  .tl-item { position: relative; margin-bottom: 36px; }
+  .tl-dot { position: absolute; left: -28px; top: 4px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid; }
+  .tl-year { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .tl-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  .tl-body { font-size: 0.875rem; color: var(--mid); line-height: 1.7; }
+
+  /* ── SLIDER SECTION ── */
+  .playground { background: var(--dark); padding: 64px 48px; }
+  .playground .section { max-width: 1000px; padding: 0; }
+  .playground .section-title { color: #F6F3EE; }
+  .playground .section-body { color: #9A9A8E; }
+  .playground .section-eyebrow { color: var(--gold); }
+  .sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
+  @media (max-width: 640px) { .sliders { grid-template-columns: 1fr; } }
+  .slider-group { }
+  .slider-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9A9A8E; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .slider-val { color: var(--gold); font-weight: 600; }
+  input[type=range] {
+    width: 100%; accent-color: var(--gold); cursor: pointer;
+    height: 4px; border-radius: 2px; background: #333;
+  }
+  .result-box { background: #2C2C2A; border: 1px solid #444; border-radius: 4px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+  .result-item .r-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9A9A8E; margin-bottom: 6px; }
+  .result-item .r-val { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #F6F3EE; }
+  .result-item .r-sub { font-size: 0.75rem; color: #9A9A8E; margin-top: 4px; }
+  .fire-status { font-size: 0.85rem; margin-top: 16px; padding: 10px 14px; border-radius: 3px; font-weight: 500; }
+
+  /* ── BAR CHART ── */
+  .bar-chart { display: flex; gap: 6px; align-items: flex-end; height: 160px; margin-bottom: 8px; }
+  .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar { width: 100%; border-radius: 2px 2px 0 0; transition: height 0.4s ease; min-height: 2px; }
+  .bar-year { font-size: 9px; color: var(--muted); }
+  .bar-amt { font-size: 8px; color: var(--muted); }
+
+  /* ── PHASE CARDS ── */
+  .phases { display: grid; gap: 12px; }
+  .phase-card { border-radius: 4px; overflow: hidden; }
+  .phase-head { padding: 16px 20px; display: flex; gap: 16px; align-items: flex-start; }
+  .phase-num { font-family: 'Playfair Display', serif; font-size: 2rem; opacity: 0.3; line-height: 1; flex-shrink: 0; }
+  .phase-meta { }
+  .phase-period { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 3px; }
+  .phase-title { font-size: 1rem; font-weight: 600; }
+  .phase-body { padding: 0 20px 16px 20px; font-size: 0.85rem; line-height: 1.75; color: var(--mid); }
+
+  /* ── BUDGET ── */
+  .budget-bars { display: grid; gap: 10px; }
+  .bbar-row { }
+  .bbar-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .bbar-name { font-size: 0.8rem; }
+  .bbar-amt { font-size: 0.8rem; color: var(--mid); }
+  .bbar-track { height: 6px; background: var(--rule); border-radius: 3px; }
+  .bbar-fill { height: 6px; border-radius: 3px; }
+
+  /* ── FOOTER ── */
+  .footer { background: var(--dark); padding: 40px 48px; text-align: center; }
+  .footer p { font-size: 0.75rem; color: #555; line-height: 1.8; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { margin-bottom: 32px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+  .progress-track { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 8px; border-radius: 4px; transition: width 0.5s ease; }
+
+  .accent-green { color: var(--green); }
+  .accent-gold { color: var(--gold); }
+  .highlight { background: var(--gold); color: var(--dark); padding: 2px 6px; border-radius: 2px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div style="font-size:1.5rem">🏔️</div>
+  <h1>Sam & Krissy</h1>
+  <p>Our retirement plan — enter password to view</p>
+  <input type="password" id="pw-input" placeholder="password" onkeydown="if(event.key==='Enter')checkPw()" />
+  <button onclick="checkPw()">Enter</button>
+  <div id="gate-error">That's not it — try again</div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Sam & Krissy Putnam · Woodinville, WA</div>
+    <h1 class="hero-title">Our Road to<br>Freedom</h1>
+    <p class="hero-sub">In 10 years we retire. Here's what we've built, what we're building, and what life looks like on the other side.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--gold)">$4.5M</div>
+        <div class="hero-stat-lbl">Projected by 2036</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">2036</div>
+        <div class="hero-stat-lbl">Target retirement year</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--green)">~55</div>
+        <div class="hero-stat-lbl">Our age at retirement</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">$10,330</div>
+        <div class="hero-stat-lbl">Monthly retirement budget</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHERE WE ARE -->
+  <div class="section">
+    <div class="section-eyebrow">Current state · 2026</div>
+    <h2 class="section-title">Where we are today</h2>
+    <p class="section-body">We've been building quietly for years. Between our 401ks, savings, and investments, we have nearly $1.5 million already working toward our future — more than halfway to our goal.</p>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Today · $1.49M</span>
+        <span>FIRE target · $3.6M</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:41.4%; background:var(--gold)"></div>
+      </div>
+      <div style="font-size:0.75rem; color:var(--muted); margin-top:6px;">41% of the way there</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">Sam's Disney 401k</div>
+        <div class="card-value" style="color:var(--blue)">$0 → growing</div>
+        <div class="card-sub">Just started Nov 2025 · maxing $23,500/yr</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Old Microsoft 401k (Sam)</div>
+        <div class="card-value" style="color:var(--blue)">$423k</div>
+        <div class="card-sub">Sitting and compounding — reaches $833k by 2036</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Your Microsoft 401k</div>
+        <div class="card-value" style="color:var(--purple)">$638k</div>
+        <div class="card-sub">Our largest account · maxing $23,500/yr</div>
+      </div>
+      <div class="card">
+        <div class="card-label">HSA (Sam)</div>
+        <div class="card-value" style="color:var(--green)">$38k</div>
+        <div class="card-sub">Triple tax-free · covers healthcare in retirement</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Taxable brokerage</div>
+        <div class="card-value" style="color:var(--gold)">$3k → building</div>
+        <div class="card-sub">Will grow to ~$1.3M by 2036 from LTI + IRA proceeds</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Dad's inherited IRA</div>
+        <div class="card-value" style="color:var(--purple)">$369k</div>
+        <div class="card-sub">Drawing down 2026–2035 · cleared before retirement</div>
+      </div>
+    </div>
+
+    <div class="cards" style="margin-top:8px">
+      <div class="card">
+        <div class="card-label">Our home</div>
+        <div class="card-value">$1.15M</div>
+        <div class="card-sub">Mortgage paid off before we retire</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Combined household income</div>
+        <div class="card-value" style="color:var(--green)">~$375k</div>
+        <div class="card-sub">Sam base + bonus · your Microsoft W2 · plus Sam's LTI equity</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- THE PLAN -->
+  <div class="section">
+    <div class="section-eyebrow">The plan · 2026–2036</div>
+    <h2 class="section-title">What we're doing to get there</h2>
+    <p class="section-body">We don't need anything dramatic. We just need to stay the course — max our accounts, let the equity vest, and let compound growth do the heavy lifting.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--red); border-color:var(--red)"></div>
+        <div class="tl-year">Right now</div>
+        <div class="tl-title">Pay off the credit cards & RV loan</div>
+        <div class="tl-body">$53k in debt gone — first. High-interest debt is the enemy of compounding. Once cleared, that money works for us instead of against us.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--blue); border-color:var(--blue)"></div>
+        <div class="tl-year">Every year · 2026–2036</div>
+        <div class="tl-title">Max both 401ks + HSAs</div>
+        <div class="tl-body">Sam's 401k: $23,500/yr. Your 401k: $23,500/yr. Sam's HSA: $8,300/yr. Your HSA: $8,550/yr. Total: $63,850/yr going in tax-free. Washington has no state income tax — every pre-tax dollar saves us 24 cents on the federal dollar.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--gold); border-color:var(--gold)"></div>
+        <div class="tl-year">Every year · 2027–2036</div>
+        <div class="tl-title">Sam's Disney equity vests → taxable brokerage</div>
+        <div class="tl-body">Sam gets ~$73k/year in Disney stock (RSUs). We sell immediately and invest it. After taxes, that's ~$55k/yr going into index funds. Over 10 years with growth, this alone builds to over $700k — and it's our bridge fund for early retirement.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--purple); border-color:var(--purple)"></div>
+        <div class="tl-year">Every year · 2026–2035</div>
+        <div class="tl-title">Draw down Dad's inherited IRA</div>
+        <div class="tl-body">We have 10 years to draw the inherited IRA down to zero. We take a bit each year and invest the after-tax proceeds. By 2035 — one year before we retire — it's gone. No complicated tax situation waiting for us in retirement.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--green); border-color:var(--green)"></div>
+        <div class="tl-year">Before 2036</div>
+        <div class="tl-title">Mortgage paid off</div>
+        <div class="tl-body">Our retirement budget assumes no mortgage payment. The house is ours free and clear. Only property tax, insurance, and maintenance — budgeted at $1,200/mo total.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTION PLAYGROUND -->
+  <div class="playground">
+    <div class="section" style="padding: 0 0 0 0; max-width:1000px; margin: 0 auto;">
+      <div class="section-eyebrow" style="color:var(--gold)">Play with the numbers</div>
+      <h2 class="section-title" style="color:#F6F3EE">What if?</h2>
+      <p class="section-body" style="color:#9A9A8E">Move the sliders and watch what changes. This is our plan — see how different assumptions affect where we land.</p>
+
+      <div class="sliders">
+        <div class="slider-group">
+          <div class="slider-label">Return rate <span class="slider-val" id="lbl-return">7%</span></div>
+          <input type="range" id="sl-return" min="4" max="10" value="7" step="0.5" oninput="update()">
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">Retire year <span class="slider-val" id="lbl-year">2036</span></div>
+          <input type="range" id="sl-year" min="2033" max="2040" value="2036" step="1" oninput="update()">
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">Monthly spend in retirement <span class="slider-val" id="lbl-spend">$10,330</span></div>
+          <input type="range" id="sl-spend" min="8000" max="15000" value="10330" step="100" oninput="update()">
+        </div>
+        <div class="slider-group">
+          <div class="slider-label">Social Security start age <span class="slider-val" id="lbl-ss">70</span></div>
+          <input type="range" id="sl-ss" min="62" max="70" value="70" step="1" oninput="update()">
+        </div>
+      </div>
+
+      <!-- Bar chart -->
+      <div class="bar-chart" id="bar-chart"></div>
+      <div style="display:flex; gap:16px; margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--blue);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">401ks</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--gold);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">Taxable</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;background:var(--green);border-radius:2px;"></div><span style="font-size:10px;color:#9A9A8E">HSA</span></div>
+      </div>
+
+      <div class="result-box">
+        <div class="result-item">
+          <div class="r-label">Portfolio at retirement</div>
+          <div class="r-val" id="r-portfolio">$4.51M</div>
+          <div class="r-sub" id="r-portfolio-sub">at 7% · retiring 2036</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">Annual income (4%)</div>
+          <div class="r-val" id="r-income">$180k</div>
+          <div class="r-sub">what the portfolio generates</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">vs. our budget</div>
+          <div class="r-val" id="r-vs" style="color:var(--green)">+$56k</div>
+          <div class="r-sub" id="r-vs-sub">cushion per year</div>
+        </div>
+        <div class="result-item">
+          <div class="r-label">FIRE number needed</div>
+          <div class="r-val" id="r-fire">$3.1M</div>
+          <div class="r-sub" id="r-fire-sub">25× annual spending</div>
+        </div>
+      </div>
+      <div class="fire-status" id="fire-status" style="background:#6B9E7A22; color:var(--green); border:1px solid var(--green);">
+        ✓ On track — projected portfolio exceeds FIRE number
+      </div>
+    </div>
+  </div>
+
+  <!-- RETIREMENT LIFE -->
+  <div class="section">
+    <div class="section-eyebrow">At retirement · 2036</div>
+    <h2 class="section-title">What retirement looks like</h2>
+    <p class="section-body">The first years of retirement are about freedom, not frugality. We've planned a life that's genuinely comfortable — with room to travel, enjoy what we've worked for, and still sleep well at night.</p>
+
+    <div style="margin-bottom:40px">
+      <div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">Our monthly retirement budget</div>
+      <div class="budget-bars" id="budget-bars"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;padding-top:12px;border-top:2px solid var(--rule);">
+        <span style="font-weight:600">Total monthly</span>
+        <span style="font-family:'Playfair Display',serif;font-size:1.2rem">$10,330</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PHASES OF RETIREMENT -->
+  <div class="section">
+    <div class="section-eyebrow">Through retirement</div>
+    <h2 class="section-title">How our money works<br>over time</h2>
+    <p class="section-body">Retirement isn't one thing — it evolves. Here's how we sequence our accounts to minimize taxes and maximize what we keep.</p>
+
+    <div class="phases">
+      <div class="phase-card" style="background:var(--gold)22; border:1px solid var(--gold)44;">
+        <div class="phase-head" style="border-left:4px solid var(--gold)">
+          <div class="phase-num" style="color:var(--gold)">01</div>
+          <div class="phase-meta">
+            <div class="phase-period" style="color:var(--gold)">2036–2041 · Ages 55–59½</div>
+            <div class="phase-title">The bridge years</div>
+          </div>
+        </div>
+        <div class="phase-body">We retire 4–5 years before we can touch our 401ks penalty-free. That's why we built the taxable brokerage (~$1.3M). We live off that, pay low capital gains rates instead of income tax rates, and let the 401ks keep growing untouched. HSA covers all our medical costs tax-free.</div>
+      </div>
+
+      <div class="phase-card" style="background:var(--blue)22; border:1px solid var(--blue)44;">
+        <div class="phase-head" style="border-left:4px solid var(--blue)">
+          <div class="phase-num" style="color:var(--blue)">02</div>
+          <div class="phase-meta">
+            <div class="phase-period" style="color:var(--blue)">2041–2051 · Ages 59½–70</div>
+            <div class="phase-title">Full access — smart withdrawals</div>
+          </div>
+        </div>
+        <div class="phase-body">Now everything is open. We withdraw in the most tax-efficient order: taxable accounts first (low capital gains rates), then carefully timed 401k withdrawals. We also start converting 401k money to Roth in low-income years — paying tax now at 12–22% to avoid higher rates later when Social Security kicks in.</div>
+      </div>
+
+      <div class="phase-card" style="background:var(--green)22; border:1px solid var(--green)44;">
+        <div class="phase-head" style="border-left:4px solid var(--green)">
+          <div class="phase-num" style="color:var(--green)">03</div>
+          <div class="phase-meta">
+            <div class="phase-period" style="color:var(--green)">2051+ · Age 70+</div>
+            <div class="phase-title">Social Security + Medicare</div>
+          </div>
+        </div>
+        <div class="phase-body">By waiting until 70 to claim Social Security, we maximize our guaranteed lifetime income — permanently. Medicare eliminates the ACA premium we've been paying. Our expenses naturally start declining too. This is the most financially stable phase of retirement.</div>
+      </div>
+
+      <div class="phase-card" style="background:var(--purple)22; border:1px solid var(--purple)44;">
+        <div class="phase-head" style="border-left:4px solid var(--purple)">
+          <div class="phase-num" style="color:var(--purple)">04</div>
+          <div class="phase-meta">
+            <div class="phase-period" style="color:var(--purple)">2058+ · Age 73+</div>
+            <div class="phase-title">Legacy & simplification</div>
+          </div>
+        </div>
+        <div class="phase-body">Required distributions from our 401ks begin at 73. The Roth conversions we did in phase 2 reduce how much we're forced to take. Travel has slowed, spending is lower, and the focus shifts to what we leave behind for Noah, Sophia, and Tobin.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SPENDING CURVE -->
+  <div class="section">
+    <div class="section-eyebrow">The spending curve</div>
+    <h2 class="section-title">Spend more early,<br>less later</h2>
+    <p class="section-body">Research shows retirees spend the most in their active early years, then naturally slow down. We've planned for this — which means our FIRE number is actually conservative.</p>
+    <div class="cards">
+      <div class="card" style="border-left:3px solid var(--gold)">
+        <div class="card-label">Go-go years · 55–70</div>
+        <div class="card-value" style="color:var(--gold)">$124–145k/yr</div>
+        <div class="card-sub">Full travel budget · active lifestyle · 3–4 trips/year</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--blue)">
+        <div class="card-label">Slow-go years · 70–80</div>
+        <div class="card-value" style="color:var(--blue)">$95–110k/yr</div>
+        <div class="card-sub">Travel moderates · lower discretionary · kids fully independent</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--purple)">
+        <div class="card-label">No-go years · 80+</div>
+        <div class="card-value" style="color:var(--purple)">$80–100k/yr</div>
+        <div class="card-sub">Healthcare rises · travel minimal · Social Security + Medicare cover more</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Built with love for Krissy · Updated July 2026 · sammysite.com/fire</p>
+    <p style="margin-top:8px">All projections assume 7% nominal return. Past performance does not guarantee future results.<br>This is a personal planning tool, not financial advice.</p>
+  </div>
+
+</div><!-- end app -->
+
+<script>
+// ── PASSWORD ──
+function checkPw() {
+  const val = document.getElementById('pw-input').value.toLowerCase().trim();
+  // simple hash check — password: ellaisadog
+  if (val === atob('ZWxsYWlzYWRvZw==')) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+// ── BUDGET BARS ──
+const BUDGET = [
+  { name: "Travel (3–4 trips/yr)",    amt: 2333, color: "#C4A44A" },
+  { name: "Healthcare (ACA)",          amt: 1900, color: "#9A7FA6" },
+  { name: "Housing (taxes, utils)",    amt: 1650, color: "#6B9E7A" },
+  { name: "Food (groceries + dining)", amt: 1400, color: "#C4956A" },
+  { name: "Transportation",            amt: 1325, color: "#6A8FA6" },
+  { name: "Giving & family",           amt: 700,  color: "#A67FA6" },
+  { name: "Personal & hobbies",        amt: 775,  color: "#7A9E7A" },
+  { name: "Financial & insurance",     amt: 250,  color: "#9A9A8E" },
+];
+const TOTAL_BUDGET = BUDGET.reduce((s,b) => s + b.amt, 0);
+
+function initBudget() {
+  const el = document.getElementById('budget-bars');
+  el.innerHTML = BUDGET.map(b => `
+    <div class="bbar-row">
+      <div class="bbar-top">
+        <span class="bbar-name">${b.name}</span>
+        <span class="bbar-amt">$${b.amt.toLocaleString()}/mo</span>
+      </div>
+      <div class="bbar-track">
+        <div class="bbar-fill" style="width:${(b.amt/TOTAL_BUDGET*100).toFixed(1)}%; background:${b.color}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── PROJECTION ENGINE ──
+function project(rate, retireYear) {
+  let samDisney = 0, samMsft = 423373, krissy = 637888;
+  let hsa = 38470, taxable = 3375, ira = 369196;
+  const r = 1 + rate / 100;
+  const LTI = 72870 * 0.76;
+  const rows = [];
+  for (let y = 0; y < 15; y++) {
+    const year = 2026 + y;
+    if (year > retireYear) { rows.push({year, total: rows[rows.length-1]?.total || 0, samDisney, samMsft, krissy, hsa, taxable}); continue; }
+    const iraLeft = Math.max(1, 2035 - year + 1);
+    const iraDist = year <= 2035 ? ira / iraLeft : 0;
+    const lti = year >= 2027 ? LTI : 0;
+    samDisney = samDisney * r + 23500;
+    samMsft   = samMsft   * r;
+    krissy    = krissy    * r + 23500;
+    hsa       = hsa       * r + 8300;
+    taxable   = taxable   * r + iraDist * 0.76 + lti;
+    ira       = Math.max(0, (ira - iraDist) * r);
+    const total = samDisney + samMsft + krissy + hsa + taxable;
+    rows.push({ year, total, samDisney, samMsft, krissy, hsa, taxable });
+  }
+  return rows;
+}
+
+function fmt(n) {
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1e3) return '$' + Math.round(n/1000) + 'k';
+  return '$' + Math.round(n);
+}
+
+function update() {
+  const rate     = parseFloat(document.getElementById('sl-return').value);
+  const retireYr = parseInt(document.getElementById('sl-year').value);
+  const spend    = parseInt(document.getElementById('sl-spend').value);
+  const ssAge    = parseInt(document.getElementById('sl-ss').value);
+
+  document.getElementById('lbl-return').textContent = rate + '%';
+  document.getElementById('lbl-year').textContent = retireYr;
+  document.getElementById('lbl-spend').textContent = '$' + spend.toLocaleString();
+  document.getElementById('lbl-ss').textContent = ssAge;
+
+  const rows = project(rate, retireYr);
+  const retRow = rows.find(r => r.year === retireYr) || rows[rows.length-1];
+  const portfolio = retRow.total;
+  const annualIncome = portfolio * 0.04;
+  const annualSpend = spend * 12;
+  const fireNum = annualSpend * 25;
+  const cushion = annualIncome - annualSpend;
+  const onTrack = portfolio >= fireNum;
+
+  document.getElementById('r-portfolio').textContent = fmt(portfolio);
+  document.getElementById('r-portfolio-sub').textContent = `at ${rate}% · retiring ${retireYr}`;
+  document.getElementById('r-income').textContent = fmt(annualIncome);
+  document.getElementById('r-vs').textContent = (cushion >= 0 ? '+' : '') + fmt(cushion);
+  document.getElementById('r-vs').style.color = cushion >= 0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('r-vs-sub').textContent = cushion >= 0 ? 'cushion per year' : 'shortfall per year';
+  document.getElementById('r-fire').textContent = fmt(fireNum);
+  document.getElementById('r-fire-sub').textContent = '25× $' + Math.round(annualSpend/1000) + 'k annual spend';
+
+  const status = document.getElementById('fire-status');
+  if (onTrack) {
+    status.style.background = 'var(--green)22';
+    status.style.color = 'var(--green)';
+    status.style.border = '1px solid var(--green)';
+    status.textContent = `✓ On track — projected ${fmt(portfolio)} exceeds FIRE number of ${fmt(fireNum)}`;
+  } else {
+    status.style.background = 'var(--red)22';
+    status.style.color = 'var(--red)';
+    status.style.border = '1px solid var(--red)';
+    status.textContent = `⚠ Gap of ${fmt(fireNum - portfolio)} — try adjusting retirement year or spending`;
+  }
+
+  // Bar chart
+  const chartRows = rows.filter(r => r.year <= retireYr);
+  const maxTotal = Math.max(...chartRows.map(r => r.total));
+  const chartEl = document.getElementById('bar-chart');
+  chartEl.innerHTML = chartRows.map(r => {
+    const h = Math.max(4, (r.total / maxTotal) * 140);
+    const ret401k = r.samDisney + r.samMsft + r.krissy;
+    const h401k = (ret401k / maxTotal) * 140;
+    const htax  = (r.taxable / maxTotal) * 140;
+    const hhsa  = (r.hsa / maxTotal) * 140;
+    const hit = r.total >= fireNum;
+    return `<div class="bar-wrap">
+      <div style="height:140px;display:flex;flex-direction:column-reverse;width:100%;gap:1px;">
+        <div class="bar" style="height:${h401k}px;background:${hit?'#6B9E7A':'#6A8FA6'};"></div>
+        <div class="bar" style="height:${htax}px;background:#C4A44A;"></div>
+        <div class="bar" style="height:${hhsa}px;background:#6B9E7A80;"></div>
+      </div>
+      <div class="bar-year">${r.year}</div>
+    </div>`;
+  }).join('');
+}
+
+function init() {
+  initBudget();
+  update();
+}
+</script>
+</body>
+</html>
