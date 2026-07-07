@@ -150,6 +150,11 @@
   .lti-callout span:last-child { font-size: 0.85rem; color: #C3C8BE; line-height: 1.65; }
   .lti-callout strong { color: var(--gold-lt); font-weight: 600; }
 
+  .consider-callout { display: flex; gap: 16px; align-items: flex-start; margin-top: 40px; padding: 22px 26px; background: var(--cream); border: 1px solid var(--rule); border-left: 4px solid var(--blue); border-radius: 8px; }
+  .consider-icon { color: var(--blue); font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+  .consider-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+  .consider-body { font-size: 0.9rem; color: var(--mid); line-height: 1.7; }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -233,7 +238,7 @@
     <h1 class="hero-title">Ten years to<br><em>freedom</em></h1>
     <p class="hero-sub">This is the story of where we are, the plan that gets us there, and the life waiting on the other side.</p>
     <div class="hero-stats">
-      <div><div class="hero-stat-val" style="color:var(--gold-lt)">$4.2M</div><div class="hero-stat-lbl">Projected by 2036</div></div>
+      <div><div class="hero-stat-val" style="color:var(--gold-lt)">$4.5M</div><div class="hero-stat-lbl">Projected by 2036</div></div>
       <div><div class="hero-stat-val">2036</div><div class="hero-stat-lbl">The year we're free</div></div>
       <div><div class="hero-stat-val" style="color:var(--sage)">55 &amp; 58</div><div class="hero-stat-lbl">Our ages then</div></div>
     </div>
@@ -261,7 +266,7 @@
       </div>
 
       <div class="reveal cards">
-        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's Disney 401k</div><div class="card-value" style="color:var(--blue)">$17k</div><div class="card-sub">Just started · adding $23,500/yr</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's Disney 401k</div><div class="card-value" style="color:var(--blue)">$17k</div><div class="card-sub">Adding $24,500/yr + Disney's 2% match</div></div>
         <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$423k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
         <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest · Microsoft adds 50% match · grows to $1.9M by 2036</div></div>
         <div class="card"><div class="card-accent" style="background:var(--sage)"></div><div class="card-label">Disney Retirement Savings Plan</div><div class="card-value" style="color:var(--sage)">Free money</div><div class="card-sub">Disney adds 6% of Sam's pay yearly — grows to $173k by 2036, costs us nothing</div></div>
@@ -283,10 +288,18 @@
 
       <div class="reveal timeline">
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--clay); color:var(--clay)"></div><div class="tl-year">First — right now</div><div class="tl-title">Clear every debt</div><div class="tl-body">The credit cards and RV loan — about $53,000 — go first. High-interest debt works against us every single day. Once it's gone, that money starts working for us instead.</div></div>
-        <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $23,500 each. Our shared HSA maxed at $8,750 (with $1,000 catch-ups once we each turn 55). And the free money on top: Microsoft matches half of Krissy's contributions, and Disney adds 6% of Sam's pay into a separate account we don't fund at all. Washington takes no state income tax, so every dollar stretches further.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $24,500 each (plus catch-up contributions once we turn 50). Our shared HSA maxed. And the free money stacks up: Microsoft matches half of Krissy's contributions, Disney matches 2% of Sam's pay into his 401k, and Disney adds another 6% into a separate account we don't fund at all. Washington takes no state income tax, so every dollar stretches further.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--gold); color:var(--gold)"></div><div class="tl-year">Optional accelerator</div><div class="tl-title">Sam's Disney stock — our flex lever</div><div class="tl-body">Sam earns around $73,000 a year in Disney shares. For now we're using that to enjoy life along the way — but if we ever chose to invest it instead, it would add roughly $765,000 to our nest egg by 2036. Flip the toggle in the next chapter to see the difference. It's the dial we can turn if we want to retire richer or sooner.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple); color:var(--purple)"></div><div class="tl-year">Every year · 2026–2035</div><div class="tl-title">Draw down Dad's gift, thoughtfully</div><div class="tl-body">We have ten years to empty the inherited IRA. We take a measured amount each year and reinvest it. By 2035 it's fully distributed — leaving us a clean, simple tax picture heading into retirement.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--green); color:var(--green)"></div><div class="tl-year">Before we retire</div><div class="tl-title">Own our home outright</div><div class="tl-body">The mortgage is gone before we stop working. No house payment in retirement — just the taxes, insurance, and upkeep. That single fact makes everything else easier.</div></div>
+      </div>
+
+      <div class="consider-callout">
+        <div class="consider-icon">◆</div>
+        <div>
+          <div class="consider-title">Worth a look: Krissy's 401k allocation</div>
+          <div class="consider-body">Krissy's Microsoft 401k (our biggest account) is currently in a 2030 target-date fund — about 48% bonds. Since we won't fully draw this money until our 70s or 80s, that's more conservative than it needs to be. Shifting toward a growth-oriented mix could add roughly $225,000 over ten years on the current balance alone. Just something to consider — the same kind of move we already made with Dad's inherited IRA.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -485,27 +498,31 @@ function project(rate, samRetire, krissyRetire, investLTI) {
   let hsa = 38470, taxable = 3375, ira = 369196;
   const r = 1 + rate / 100;
   const LTI = 72870 * 0.76;
-  const KRISSY_MATCH = 11750;        // Microsoft matches 50% of $23,500
-  const RSP_ANNUAL = 208200 * 0.06;  // Disney RSP: 6% of base, fully company-funded
+  const KRISSY_MATCH = 11750;        // Microsoft 50% match
+  const KRISSY_AFTERTAX = 4600;      // 4% after-tax (non-Roth), left unconverted
+  const RSP_ANNUAL = 208200 * 0.06;  // Disney RSP: 6% of base, company-funded
+  const SIP_MATCH = 208200 * 0.02;   // Disney 401k match: $0.50/$1 up to 4% = 2%
+  const limit = (age) => age >= 60 && age <= 63 ? 35750 : age >= 50 ? 32500 : 24500;
   const rows = [];
   const lastRetire = Math.max(samRetire, krissyRetire);
   for (let y = 0; y < 15; y++) {
     const year = 2026 + y;
+    const samAge = 45 + y, krissyAge = 48 + y;
     const samWorks = year <= samRetire;
     const krissyWorks = year <= krissyRetire;
     const iraLeft = Math.max(1, 2035 - year + 1);
     const iraDist = year <= 2035 ? ira / iraLeft : 0;
     const lti = (year >= 2027 && samWorks && investLTI) ? LTI : 0;
-    // HSA: $8,750 shared family limit + $1,000 catch-up per person once they turn 55
     let hsaAdd = 8750;
     if (krissyWorks && year >= 2033) hsaAdd += 1000;
     if (samWorks && year >= 2036) hsaAdd += 1000;
-    // Disney RSP: company-funded 6% of base, starts after 1 yr service (2027)
     const rsp = (samWorks && year >= 2027) ? RSP_ANNUAL : 0;
-    samDisney = samDisney * r + (samWorks ? 23500 : 0);
+    // Krissy: elective (pre-tax+Roth) capped at $24,500 + catch-up, plus $4,600 after-tax
+    const krissyElective = krissyAge >= 60 && krissyAge <= 63 ? 35750 : krissyAge >= 50 ? 32500 : 24500;
+    samDisney = samDisney * r + (samWorks ? limit(samAge) + SIP_MATCH : 0);
     samRSP    = samRSP * r + rsp;
     samMsft   = samMsft   * r;
-    krissy    = krissy    * r + (krissyWorks ? 23500 + KRISSY_MATCH : 0);
+    krissy    = krissy    * r + (krissyWorks ? krissyElective + KRISSY_AFTERTAX + KRISSY_MATCH : 0);
     hsa       = hsa * r + ((samWorks || krissyWorks) ? hsaAdd : 0);
     taxable   = taxable * r + iraDist * 0.76 + lti;
     ira       = Math.max(0, (ira - iraDist) * r);
