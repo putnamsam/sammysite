@@ -214,9 +214,9 @@
 
     <div class="cards">
       <div class="card">
-        <div class="card-label">Sam's Disney 401k</div>
-        <div class="card-value" style="color:var(--blue)">$0 → growing</div>
-        <div class="card-sub">Just started Nov 2025 · maxing $23,500/yr</div>
+        <div class="card-label">Sam's Disney 401k (SIP)</div>
+        <div class="card-value" style="color:var(--blue)">$17,007</div>
+        <div class="card-sub">Confirmed flowing · maxing $23,500/yr</div>
       </div>
       <div class="card">
         <div class="card-label">Old Microsoft 401k (Sam)</div>
@@ -229,9 +229,9 @@
         <div class="card-sub">Our largest account · maxing $23,500/yr</div>
       </div>
       <div class="card">
-        <div class="card-label">HSA (Sam)</div>
+        <div class="card-label">HSA (Sam + Krissy)</div>
         <div class="card-value" style="color:var(--green)">$38k</div>
-        <div class="card-sub">Triple tax-free · covers healthcare in retirement</div>
+        <div class="card-sub">$4,400/yr Sam (self-only) + $8,750/yr Krissy (family) = $13,150/yr combined</div>
       </div>
       <div class="card">
         <div class="card-label">Taxable brokerage</div>
@@ -278,7 +278,7 @@
         <div class="tl-dot" style="background:var(--blue); border-color:var(--blue)"></div>
         <div class="tl-year">Every year · 2026–2036</div>
         <div class="tl-title">Max both 401ks + HSAs</div>
-        <div class="tl-body">Sam's 401k: $23,500/yr. Your 401k: $23,500/yr. Sam's HSA: $8,300/yr. Your HSA: $8,550/yr. Total: $63,850/yr going in tax-free. Washington has no state income tax — every pre-tax dollar saves us 24 cents on the federal dollar.</div>
+        <div class="tl-body">Sam's 401k: $23,500/yr. Your 401k: $23,500/yr. Sam's HSA: $4,400/yr (self-only plan). Your HSA: $8,750/yr (family plan). Total: $59,650/yr going in tax-free. Washington has no state income tax — every pre-tax dollar saves us 24 cents on the federal dollar.</div>
       </div>
       <div class="tl-item">
         <div class="tl-dot" style="background:var(--gold); border-color:var(--gold)"></div>
@@ -516,7 +516,7 @@ function initBudget() {
 
 // ── PROJECTION ENGINE ──
 function project(rate, retireYear) {
-  let samDisney = 0, samMsft = 423373, krissy = 637888;
+  let samDisney = 17007, samMsft = 423373, krissy = 637888;
   let hsa = 38470, taxable = 3375, ira = 369196;
   const r = 1 + rate / 100;
   const LTI = 72870 * 0.76;
@@ -530,7 +530,7 @@ function project(rate, retireYear) {
     samDisney = samDisney * r + 23500;
     samMsft   = samMsft   * r;
     krissy    = krissy    * r + 23500;
-    hsa       = hsa       * r + 8300;
+    hsa       = hsa       * r + 13150; // Sam $4,400 self-only + Krissy $8,750 family
     taxable   = taxable   * r + iraDist * 0.76 + lti;
     ira       = Math.max(0, (ira - iraDist) * r);
     const total = samDisney + samMsft + krissy + hsa + taxable;
