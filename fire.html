@@ -228,7 +228,7 @@
     <h1 class="hero-title">Ten years to<br><em>freedom</em></h1>
     <p class="hero-sub">This is the story of where we are, the plan that gets us there, and the life waiting on the other side.</p>
     <div class="hero-stats">
-      <div><div class="hero-stat-val" style="color:var(--gold-lt)">$4.6M</div><div class="hero-stat-lbl">Projected by 2036</div></div>
+      <div><div class="hero-stat-val" style="color:var(--gold-lt)">$3.8M</div><div class="hero-stat-lbl">Projected by 2036</div></div>
       <div><div class="hero-stat-val">2036</div><div class="hero-stat-lbl">The year we're free</div></div>
       <div><div class="hero-stat-val" style="color:var(--sage)">55 &amp; 58</div><div class="hero-stat-lbl">Our ages then</div></div>
     </div>
@@ -260,7 +260,7 @@
         <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$423k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
         <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest · grows to $1.58M by 2036</div></div>
         <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$38k</div><div class="card-sub">Tax-free · $8,750/yr shared, plus catch-ups at 55</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Taxable investments</div><div class="card-value" style="color:var(--gold)">$3k</div><div class="card-sub">Small now · grows to $1.3M — our bridge</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Taxable investments</div><div class="card-value" style="color:var(--gold)">$3k</div><div class="card-sub">Grows to ~$559k from Dad's IRA — our bridge</div></div>
         <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Dad's inherited IRA</div><div class="card-value" style="color:var(--purple)">$369k</div><div class="card-sub">Drawing down through 2035</div></div>
       </div>
     </div>
@@ -278,7 +278,7 @@
       <div class="reveal timeline">
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--clay); color:var(--clay)"></div><div class="tl-year">First — right now</div><div class="tl-title">Clear every debt</div><div class="tl-body">The credit cards and RV loan — about $53,000 — go first. High-interest debt works against us every single day. Once it's gone, that money starts working for us instead.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $23,500 each. Our shared HSA maxed at $8,750 (with $1,000 catch-ups once we each turn 55). That's over $55,000 a year going in before taxes — and Washington takes no state income tax, so every dollar stretches further.</div></div>
-        <div class="tl-item"><div class="tl-dot" style="border-color:var(--gold); color:var(--gold)"></div><div class="tl-year">Every year · 2027–2036</div><div class="tl-title">Turn Sam's Disney stock into freedom</div><div class="tl-body">Sam earns around $73,000 a year in Disney shares. We sell them the moment they vest and invest the proceeds — about $55,000 a year after tax — into simple index funds. This becomes the bridge that carries us through our early retirement years.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--gold); color:var(--gold)"></div><div class="tl-year">Optional accelerator</div><div class="tl-title">Sam's Disney stock — our flex lever</div><div class="tl-body">Sam earns around $73,000 a year in Disney shares. For now we're using that to enjoy life along the way — but if we ever chose to invest it instead, it would add roughly $765,000 to our nest egg by 2036. Flip the toggle in the next chapter to see the difference. It's the dial we can turn if we want to retire richer or sooner.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple); color:var(--purple)"></div><div class="tl-year">Every year · 2026–2035</div><div class="tl-title">Draw down Dad's gift, thoughtfully</div><div class="tl-body">We have ten years to empty the inherited IRA. We take a measured amount each year and reinvest it. By 2035 it's fully distributed — leaving us a clean, simple tax picture heading into retirement.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--green); color:var(--green)"></div><div class="tl-year">Before we retire</div><div class="tl-title">Own our home outright</div><div class="tl-body">The mortgage is gone before we stop working. No house payment in retirement — just the taxes, insurance, and upkeep. That single fact makes everything else easier.</div></div>
       </div>
@@ -317,11 +317,11 @@
 
         <div class="toggle-row">
           <div class="toggle-switch" onclick="toggleLTI()">
-            <input type="checkbox" id="lti-check" checked>
-            <span class="toggle-track" id="lti-track"></span>
-            <span class="toggle-knob on" id="lti-knob"></span>
+            <input type="checkbox" id="lti-check">
+            <span class="toggle-track off" id="lti-track"></span>
+            <span class="toggle-knob" id="lti-knob"></span>
           </div>
-          <span class="toggle-label" id="lti-label">Investing Sam's Disney stock (LTI) — <strong>on</strong></span>
+          <span class="toggle-label" id="lti-label">Investing Sam's Disney stock (LTI) — <strong>off</strong></span>
         </div>
 
         <div class="chart-frame">
@@ -378,7 +378,7 @@
       <div class="reveal phases">
         <div class="phase-card">
           <div class="phase-head"><div class="phase-age" style="color:var(--gold)">55<span style="font-size:1rem">–59½</span></div><div><div class="phase-period" style="color:var(--gold)">2036–2041 · The bridge</div><div class="phase-title">Living on the bridge fund</div></div></div>
-          <div class="phase-body">We retire a few years before we can touch our 401ks without penalty. That's exactly why we built the taxable investment account — around $1.3 million. We live off it, paying low capital-gains rates instead of income tax, while our retirement accounts keep growing untouched. Our health savings covers medical costs, tax-free.</div>
+          <div class="phase-body">We retire a few years before we can touch our 401ks without penalty. That's exactly why we built the taxable investment account — around $560,000, funded mostly by drawing down Dad's IRA. We live off it, paying low capital-gains rates instead of income tax, while our retirement accounts keep growing untouched. Our health savings covers medical costs, tax-free. If we invested Sam's Disney stock too, this cushion would be far larger.</div>
         </div>
         <div class="phase-card">
           <div class="phase-head"><div class="phase-age" style="color:var(--blue)">59½<span style="font-size:1rem">–70</span></div><div><div class="phase-period" style="color:var(--blue)">2041–2051 · Full access</div><div class="phase-title">Everything unlocks</div></div></div>
@@ -503,7 +503,7 @@ function project(rate, samRetire, krissyRetire, investLTI) {
   return rows;
 }
 
-let INVEST_LTI = true;
+let INVEST_LTI = false;
 function toggleLTI() {
   INVEST_LTI = !INVEST_LTI;
   document.getElementById('lti-check').checked = INVEST_LTI;
