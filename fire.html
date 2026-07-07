@@ -258,8 +258,8 @@
       <div class="reveal cards">
         <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's Disney 401k</div><div class="card-value" style="color:var(--blue)">$17k</div><div class="card-sub">Just started · adding $23,500/yr</div></div>
         <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$423k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest account · adding $23,500/yr</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$38k</div><div class="card-sub">Tax-free · $13,150/yr between us</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest · grows to $1.58M by 2036</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$38k</div><div class="card-sub">Tax-free · $8,750/yr shared, plus catch-ups at 55</div></div>
         <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Taxable investments</div><div class="card-value" style="color:var(--gold)">$3k</div><div class="card-sub">Small now · grows to $1.3M — our bridge</div></div>
         <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Dad's inherited IRA</div><div class="card-value" style="color:var(--purple)">$369k</div><div class="card-sub">Drawing down through 2035</div></div>
       </div>
@@ -277,7 +277,7 @@
 
       <div class="reveal timeline">
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--clay); color:var(--clay)"></div><div class="tl-year">First — right now</div><div class="tl-title">Clear every debt</div><div class="tl-body">The credit cards and RV loan — about $53,000 — go first. High-interest debt works against us every single day. Once it's gone, that money starts working for us instead.</div></div>
-        <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $23,500 each. Both HSAs maxed at $13,150 combined. That's nearly $60,000 a year going in before taxes — and Washington takes no state income tax, so every dollar stretches further.</div></div>
+        <div class="tl-item"><div class="tl-dot" style="border-color:var(--blue); color:var(--blue)"></div><div class="tl-year">Every year · 2026–2036</div><div class="tl-title">Fill every tax-advantaged bucket</div><div class="tl-body">Both 401ks maxed at $23,500 each. Our shared HSA maxed at $8,750 (with $1,000 catch-ups once we each turn 55). That's over $55,000 a year going in before taxes — and Washington takes no state income tax, so every dollar stretches further.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--gold); color:var(--gold)"></div><div class="tl-year">Every year · 2027–2036</div><div class="tl-title">Turn Sam's Disney stock into freedom</div><div class="tl-body">Sam earns around $73,000 a year in Disney shares. We sell them the moment they vest and invest the proceeds — about $55,000 a year after tax — into simple index funds. This becomes the bridge that carries us through our early retirement years.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--purple); color:var(--purple)"></div><div class="tl-year">Every year · 2026–2035</div><div class="tl-title">Draw down Dad's gift, thoughtfully</div><div class="tl-body">We have ten years to empty the inherited IRA. We take a measured amount each year and reinvest it. By 2035 it's fully distributed — leaving us a clean, simple tax picture heading into retirement.</div></div>
         <div class="tl-item"><div class="tl-dot" style="border-color:var(--green); color:var(--green)"></div><div class="tl-year">Before we retire</div><div class="tl-title">Own our home outright</div><div class="tl-body">The mortgage is gone before we stop working. No house payment in retirement — just the taxes, insurance, and upkeep. That single fact makes everything else easier.</div></div>
@@ -487,7 +487,14 @@ function project(rate, samRetire, krissyRetire, investLTI) {
     samDisney = samDisney * r + (samWorks ? 23500 : 0);
     samMsft   = samMsft   * r;
     krissy    = krissy    * r + (krissyWorks ? 23500 : 0);
-    hsa       = hsa * r + (samWorks ? 4400 : 0) + (krissyWorks ? 8750 : 0);
+    // HSA: $8,750 shared family limit + $1,000 catch-up per person once they turn 55
+    // Krissy turns 55 in 2033, Sam in 2036
+    let hsaAdd = 8750;
+    const krissyAge55 = year >= 2033;
+    const samAge55 = year >= 2036;
+    if (krissyWorks && krissyAge55) hsaAdd += 1000;
+    if (samWorks && samAge55) hsaAdd += 1000;
+    hsa       = hsa * r + ((samWorks || krissyWorks) ? hsaAdd : 0);
     taxable   = taxable * r + iraDist * 0.76 + lti;
     ira       = Math.max(0, (ira - iraDist) * r);
     rows.push({ year, samDisney, samMsft, krissy, hsa, taxable, ira,
