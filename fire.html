@@ -155,6 +155,21 @@
   .consider-title { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
   .consider-body { font-size: 0.9rem; color: var(--mid); line-height: 1.7; }
 
+  /* Runway chapter */
+  .runway-chart { display: flex; gap: 6px; align-items: flex-end; height: 180px; margin-bottom: 8px; }
+  .runway-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .runway-stack { height: 150px; display: flex; flex-direction: column-reverse; width: 100%; gap: 1px; justify-content: flex-start; }
+  .runway-bar { width: 100%; border-radius: 1px; }
+  .runway-amt { font-size: 8px; color: var(--muted); }
+  .runway-year { font-size: 9px; color: var(--muted); }
+  .runway-year.crunch { color: var(--clay); font-weight: 600; }
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  @media (max-width: 640px) { .scenario-grid { grid-template-columns: 1fr; } }
+  .scenario-card { background: var(--cream); border: 1px solid var(--rule); border-radius: 10px; padding: 24px 26px; }
+  .scenario-title { font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 10px; }
+  .scenario-body { font-size: 0.9rem; color: var(--mid); line-height: 1.7; }
+  .scenario-body strong { color: var(--ink); }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -419,7 +434,58 @@
     </div>
   </div>
 
-  <!-- CHAPTER 6: SPENDING CURVE -->
+  <!-- CHAPTER 6: THE RUNWAY -->
+  <div class="light">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Six · The Runway</div>
+        <h2 class="title">The big things<br>between <em>now and then</em></h2>
+        <p class="lede">The next ten years aren't just about saving — they're about three kids growing up and a house getting paid off. Here's how the big expenses land, and how we handle them without knocking the plan off course.</p>
+      </div>
+
+      <div class="reveal">
+        <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:20px;">Our three</div>
+        <div class="cards" style="margin-bottom:44px;">
+          <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Noah</div><div class="card-value" style="color:var(--blue)">~15</div><div class="card-sub">College 2030–2034 · car already handled ✓</div></div>
+          <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Tobin</div><div class="card-value" style="color:var(--gold)">~12</div><div class="card-sub">College 2032–2036 · car around 2030</div></div>
+          <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Sophia</div><div class="card-value" style="color:var(--purple)">~10</div><div class="card-sub">College 2034–2038 · car around 2032</div></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:18px;">The big expenses, year by year</div>
+        <div class="runway-chart" id="runway-chart"></div>
+        <div style="display:flex; gap:18px; margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:6px;"><div style="width:11px;height:11px;background:var(--blue);border-radius:2px;"></div><span style="font-size:0.72rem;color:var(--muted)">College (our share)</span></div>
+          <div style="display:flex;align-items:center;gap:6px;"><div style="width:11px;height:11px;background:var(--gold);border-radius:2px;"></div><span style="font-size:0.72rem;color:var(--muted)">Kids' cars</span></div>
+        </div>
+        <p style="font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:36px; max-width:600px;">Our 529 plans cover tuition — what's left (room, board, books, living) is what we cash-flow. The heaviest years, 2032–2036, overlap right with retirement. Sophia's last years even fall just after we stop working. It's the one real tension in the plan, and knowing it now is how we stay ahead of it.</p>
+      </div>
+
+      <div class="reveal">
+        <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:18px;">The house · $377,928 at 2.875%</div>
+        <p class="lede" style="font-size:1rem; margin-bottom:28px;">Our mortgage is a gift — locked at 2.875%, cheaper than almost any investment. The plan: keep making regular payments, and quietly send Krissy's photography income into an index fund earmarked for the house. When we're ready, we decide how to use it.</p>
+
+        <div class="scenario-grid">
+          <div class="scenario-card" style="border-left:4px solid var(--green);">
+            <div class="scenario-title" style="color:var(--green);">Pay it off at retirement</div>
+            <div class="scenario-body">Clear the house in 2036 with the payoff fund plus a small top-up. Our monthly needs drop by <strong>~$1,941</strong> — exactly what our retirement budget already assumes. No debt, complete peace of mind.</div>
+          </div>
+          <div class="scenario-card" style="border-left:4px solid var(--blue);">
+            <div class="scenario-title" style="color:var(--blue);">Keep it, let the fund grow</div>
+            <div class="scenario-body">At 2.875%, the mortgage costs less than the market returns. Keep the fund invested — it could grow to <strong>~$534k by 2050</strong> while the house pays off on its own, capturing the spread. More math, less tidiness.</div>
+          </div>
+        </div>
+
+        <div class="lti-callout" style="margin-bottom:0;">
+          <span class="lti-callout-icon">✦</span>
+          <span>Here's the quiet beauty: parking the money in an index fund — instead of throwing it at the mortgage — is the smart move <strong>either way</strong>. It keeps our options open and earns the spread. We don't decide today. We build the fund, reach 2035, and choose peace of mind or math with clearer eyes.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 7: SPENDING CURVE -->
   <div class="dark-sec">
     <div class="section">
       <div class="reveal">
@@ -657,8 +723,50 @@ function updateBudgetTotal() {
   document.getElementById('budget-fire').textContent = `That's ${fmt(annual)} a year — needing a ${fmt(fire)} nest egg`;
 }
 
+function renderRunway() {
+  // College (our cash-flowed share) + kids' cars by year
+  const kids = [
+    { name: "Noah",   birth: 2011, collegeStart: 2030, carDone: true },
+    { name: "Tobin",  birth: 2014, collegeStart: 2032, carDone: false },
+    { name: "Sophia", birth: 2016, collegeStart: 2034, carDone: false },
+  ];
+  const collegeCashToday = 16000, collegeInfl = 0.05;
+  const carToday = 17500, carInfl = 0.03;
+  const rows = {};
+  for (let y = 2026; y <= 2036; y++) rows[y] = { college: 0, cars: 0 };
+  kids.forEach(k => {
+    for (let i = 0; i < 4; i++) {
+      const yr = k.collegeStart + i;
+      if (rows[yr]) rows[yr].college += collegeCashToday * Math.pow(1 + collegeInfl, yr - 2026);
+    }
+    if (!k.carDone) {
+      const cy = k.birth + 16;
+      if (rows[cy]) rows[cy].cars += carToday * Math.pow(1 + carInfl, cy - 2026);
+    }
+  });
+  const years = Object.keys(rows).map(Number).sort();
+  const maxTotal = Math.max(...years.map(y => rows[y].college + rows[y].cars));
+  const el = document.getElementById('runway-chart');
+  if (!el) return;
+  el.innerHTML = years.map(y => {
+    const r = rows[y];
+    const total = r.college + r.cars;
+    const h = v => maxTotal > 0 ? (v / maxTotal) * 150 : 0;
+    const crunch = y >= 2032;
+    return `<div class="runway-bar-wrap">
+      <div class="runway-amt">${total > 0 ? '$' + Math.round(total/1000) + 'k' : ''}</div>
+      <div class="runway-stack">
+        <div class="runway-bar" style="height:${h(r.college)}px;background:var(--blue);"></div>
+        <div class="runway-bar" style="height:${h(r.cars)}px;background:var(--gold);"></div>
+      </div>
+      <div class="runway-year${crunch ? ' crunch' : ''}">${y}</div>
+    </div>`;
+  }).join('');
+}
+
 function init() {
   renderBudget();
+  renderRunway();
   update();
   // Animate arc
   setTimeout(() => {
