@@ -170,6 +170,12 @@
   .scenario-body { font-size: 0.9rem; color: var(--mid); line-height: 1.7; }
   .scenario-body strong { color: var(--ink); }
 
+  .mort-slider-box { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 22px 24px; margin-bottom: 20px; }
+  .mort-slider-box input[type=range] { width: 100%; height: 5px; border-radius: 3px; margin-top: 6px; }
+  .mort-result { font-size: 0.9rem; color: var(--mid); line-height: 1.6; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .mort-result strong { color: var(--ink); }
+  .mort-result .hl { color: var(--gold); font-weight: 600; }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -466,14 +472,20 @@
         <div style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:18px;">The house · $377,928 at 2.875%</div>
         <p class="lede" style="font-size:1rem; margin-bottom:28px;">Our mortgage is a gift — locked at 2.875%, cheaper than almost any investment. The plan: keep making regular payments, and quietly send Krissy's photography income into an index fund earmarked for the house. When we're ready, we decide how to use it.</p>
 
+        <div class="mort-slider-box">
+          <div class="slider-label" style="color:var(--mid);"><span>Krissy's business income to the fund each year</span><span class="slider-val" id="mort-lbl" style="color:var(--gold);">$15,000</span></div>
+          <input type="range" id="mort-slider" min="0" max="60000" value="15000" step="1000" oninput="updateMortgage()" style="accent-color:var(--gold);">
+          <div class="mort-result" id="mort-result"></div>
+        </div>
+
         <div class="scenario-grid">
           <div class="scenario-card" style="border-left:4px solid var(--green);">
             <div class="scenario-title" style="color:var(--green);">Pay it off at retirement</div>
-            <div class="scenario-body">Clear the house in 2036 with the payoff fund plus a small top-up. Our monthly needs drop by <strong>~$1,941</strong> — exactly what our retirement budget already assumes. No debt, complete peace of mind.</div>
+            <div class="scenario-body">By 2036 the fund reaches <strong id="mort-fund-a">$207k</strong> against a <strong id="mort-bal-a">$234k</strong> balance. Clear the house with the fund plus a <strong id="mort-gap-a">$27k</strong> top-up. Our monthly needs drop by <strong>~$1,941</strong> — exactly what our retirement budget already assumes. No debt, complete peace of mind.</div>
           </div>
           <div class="scenario-card" style="border-left:4px solid var(--blue);">
             <div class="scenario-title" style="color:var(--blue);">Keep it, let the fund grow</div>
-            <div class="scenario-body">At 2.875%, the mortgage costs less than the market returns. Keep the fund invested — it could grow to <strong>~$534k by 2050</strong> while the house pays off on its own, capturing the spread. More math, less tidiness.</div>
+            <div class="scenario-body">At 2.875%, the mortgage costs less than the market returns. Keep the fund invested — it could grow to <strong id="mort-fund-b">~$534k by 2050</strong> while the house pays off on its own, capturing the spread. More math, less tidiness.</div>
           </div>
         </div>
 
@@ -723,6 +735,55 @@ function updateBudgetTotal() {
   document.getElementById('budget-fire').textContent = `That's ${fmt(annual)} a year — needing a ${fmt(fire)} nest egg`;
 }
 
+function updateMortgage() {
+  const biz = parseInt(document.getElementById('mort-slider').value);
+  document.getElementById('mort-lbl').textContent = '$' + biz.toLocaleString();
+
+  const balance = 377928, rate = 0.02875, mr = rate / 12, pi = 1941, growth = 0.07;
+  const fmt = n => n >= 1e6 ? '$' + (n/1e6).toFixed(2) + 'M' : '$' + Math.round(n/1000) + 'k';
+
+  // Mortgage balance after N months
+  const balAfter = (months) => {
+    let b = balance;
+    for (let m = 0; m < months; m++) { b -= (pi - b*mr); if (b < 0) return 0; }
+    return b;
+  };
+  // Fund after N years
+  const fundAfter = (yrs) => { let f = 0; for (let y = 0; y < yrs; y++) f = f*(1+growth) + biz; return f; };
+
+  const fund2036 = fundAfter(10);
+  const bal2036 = balAfter(120);
+  const gap = Math.max(0, bal2036 - fund2036);
+  const surplus = Math.max(0, fund2036 - bal2036);
+
+  // Find year fund can cover mortgage
+  let payoffYear = null;
+  for (let y = 1; y <= 14; y++) {
+    if (fundAfter(y) >= balAfter(y*12)) { payoffYear = 2026 + y; break; }
+  }
+
+  // Scenario A values
+  document.getElementById('mort-fund-a').textContent = fmt(fund2036);
+  document.getElementById('mort-bal-a').textContent = fmt(bal2036);
+  document.getElementById('mort-gap-a').textContent = gap > 0 ? fmt(gap) + ' top-up' : 'no top-up needed';
+
+  // Scenario B: fund grows to 2050 with no new contributions after retirement (2036)
+  let fundB = fund2036;
+  for (let y = 2037; y <= 2050; y++) fundB *= (1+growth);
+  document.getElementById('mort-fund-b').textContent = '~' + fmt(fundB) + ' by 2050';
+
+  // Result line
+  let msg;
+  if (payoffYear && payoffYear <= 2036) {
+    msg = `At <span class="hl">$${biz.toLocaleString()}/yr</span>, the fund could cover the mortgage by <strong>${payoffYear}</strong> — even before retirement. By 2036 you'd have <strong>${fmt(surplus)}</strong> more than the balance.`;
+  } else if (gap === 0) {
+    msg = `At <span class="hl">$${biz.toLocaleString()}/yr</span>, the fund reaches <strong>${fmt(fund2036)}</strong> by 2036 — enough to clear the <strong>${fmt(bal2036)}</strong> balance with <strong>${fmt(surplus)}</strong> to spare.`;
+  } else {
+    msg = `At <span class="hl">$${biz.toLocaleString()}/yr</span>, the fund reaches <strong>${fmt(fund2036)}</strong> by 2036 against a <strong>${fmt(bal2036)}</strong> balance — a <strong>${fmt(gap)}</strong> gap you'd close from savings to pay it off.`;
+  }
+  document.getElementById('mort-result').innerHTML = msg;
+}
+
 function renderRunway() {
   // College (our cash-flowed share) + kids' cars by year
   const kids = [
@@ -767,6 +828,7 @@ function renderRunway() {
 function init() {
   renderBudget();
   renderRunway();
+  updateMortgage();
   update();
   // Animate arc
   setTimeout(() => {
