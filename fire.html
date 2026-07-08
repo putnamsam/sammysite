@@ -201,6 +201,9 @@
   .budget-list { display: grid; gap: 18px; margin-bottom: 8px; }
   .brow-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
   .brow-name { font-size: 0.9rem; font-weight: 500; }
+  .brow-toggle { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; margin-left: 8px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); color: var(--muted); font-size: 0.85rem; line-height: 1; cursor: pointer; vertical-align: middle; font-family: 'Inter', sans-serif; transition: all 0.15s; }
+  .brow-toggle:hover { border-color: var(--gold); color: var(--gold); }
+  .brow-includes { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-top: 10px; padding: 12px 14px; background: var(--paper); border-radius: 6px; }
   .brow-amt { font-family: 'Fraunces', serif; font-size: 1rem; color: var(--mid); }
   .budget-slider { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; cursor: pointer; }
   .budget-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--cream); border: 2px solid currentColor; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
@@ -555,15 +558,16 @@ const SAM_AGE_BASE = 55 - 2036;    // add year to get age
 const KRISSY_AGE_BASE = 58 - 2036;
 
 let BUDGET = [
-  { name: "Travel · a few trips a year", amt: 2333, color: "#C89B3C", min: 0, max: 5000 },
-  { name: "Healthcare",                   amt: 1900, color: "#8B7BA6", min: 500, max: 3500 },
-  { name: "Home · taxes, utilities, upkeep", amt: 1650, color: "#5B8C6E", min: 800, max: 3000 },
-  { name: "Food · groceries & dining out", amt: 1400, color: "#C07B54", min: 600, max: 3000 },
-  { name: "Getting around",               amt: 1325, color: "#5E8299", min: 400, max: 2500 },
-  { name: "Personal & hobbies",           amt: 775,  color: "#8AAB8E", min: 200, max: 2000 },
-  { name: "Giving & family",              amt: 700,  color: "#8B7BA6", min: 0, max: 2500 },
-  { name: "Insurance & the boring stuff", amt: 250,  color: "#8B9089", min: 100, max: 1000 },
+  { name: "Travel · a few trips a year", amt: 2333, color: "#C89B3C", min: 0, max: 5000, includes: "3–4 trips a year — flights, hotels, meals out, activities. A mix of domestic long weekends and one or two bigger international trips." },
+  { name: "Healthcare",                   amt: 1900, color: "#8B7BA6", min: 500, max: 3500, includes: "ACA marketplace premiums for the two of us before Medicare (age 65), plus dental, vision, and routine out-of-pocket costs. This drops a lot once Medicare kicks in." },
+  { name: "Home · taxes, utilities, upkeep", amt: 1650, color: "#5B8C6E", min: 800, max: 3000, includes: "Property taxes, homeowners insurance, electricity, gas, water, internet, and a maintenance reserve. No mortgage payment — the house is paid off." },
+  { name: "Food · groceries & dining out", amt: 1400, color: "#C07B54", min: 600, max: 3000, includes: "Weekly groceries plus dining out — roughly $800 groceries and $600 restaurants and coffee." },
+  { name: "Getting around",               amt: 1325, color: "#5E8299", min: 400, max: 2500, includes: "Gas and charging, auto insurance for both vehicles, registration, maintenance, and a set-aside for replacing a car every several years." },
+  { name: "Personal & hobbies",           amt: 775,  color: "#8AAB8E", min: 200, max: 2000, includes: "Clothing, personal care, gym, the golden retriever, vinyl and other hobbies, plus subscriptions and streaming." },
+  { name: "Giving & family",              amt: 700,  color: "#8B7BA6", min: 0, max: 2500, includes: "Gifts for birthdays and holidays, charitable giving, and occasional help for the kids once they're grown." },
+  { name: "Insurance & the boring stuff", amt: 250,  color: "#8B9089", min: 100, max: 1000, includes: "Life and umbrella insurance, tax prep, and other small recurring administrative costs." },
 ];
+let EXPANDED = {};
 
 function fmt(n) {
   if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
@@ -707,15 +711,28 @@ function renderBudget() {
   document.getElementById('budget-list').innerHTML = BUDGET.map((b, i) => `
     <div class="brow">
       <div class="brow-top">
-        <span class="brow-name">${b.name}</span>
+        <span class="brow-name">${b.name}
+          <button class="brow-toggle" id="btoggle-${i}" onclick="toggleBudget(${i})" aria-label="What's included">${EXPANDED[i] ? '−' : '+'}</button>
+        </span>
         <span class="brow-amt" id="bamt-${i}">$${b.amt.toLocaleString()}/mo</span>
       </div>
       <input type="range" class="budget-slider" style="color:${b.color}; background:linear-gradient(to right, ${b.color} 0%, ${b.color} ${((b.amt-b.min)/(b.max-b.min)*100)}%, var(--rule) ${((b.amt-b.min)/(b.max-b.min)*100)}%, var(--rule) 100%);"
         min="${b.min}" max="${b.max}" value="${b.amt}" step="25"
         oninput="updateBudget(${i}, this)">
+      <div class="brow-includes" id="bincludes-${i}" style="display:${EXPANDED[i] ? 'block' : 'none'};">
+        <span style="color:${b.color};">What's inside · </span>${b.includes}
+      </div>
     </div>
   `).join('');
   updateBudgetTotal();
+}
+
+function toggleBudget(i) {
+  EXPANDED[i] = !EXPANDED[i];
+  const inc = document.getElementById('bincludes-' + i);
+  const tog = document.getElementById('btoggle-' + i);
+  if (inc) inc.style.display = EXPANDED[i] ? 'block' : 'none';
+  if (tog) tog.textContent = EXPANDED[i] ? '−' : '+';
 }
 
 function updateBudget(i, el) {
