@@ -133,6 +133,7 @@
   input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); border: 3px solid var(--forest); cursor: pointer; }
 
   .stagger-note { font-size: 0.78rem; color: var(--gold-lt); background: rgba(200,155,60,0.1); border: 1px solid rgba(200,155,60,0.25); border-radius: 6px; padding: 10px 14px; margin-bottom: 20px; text-align: center; }
+  .wd-note { font-size: 0.78rem; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; text-align: center; transition: all 0.3s; }
 
   /* ── TOGGLE ── */
   .toggle-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 32px; padding: 14px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
@@ -355,7 +356,12 @@
             <div class="slider-label"><span>Krissy retires<span class="slider-age" id="age-krissy">age 58</span></span><span class="slider-val" id="lbl-krissy">2036</span></div>
             <input type="range" id="sl-krissy" min="2028" max="2041" value="2036" step="1" oninput="update()">
           </div>
+          <div>
+            <div class="slider-label"><span>Withdrawal rate<span class="slider-age" id="wd-verdict">safe</span></span><span class="slider-val" id="lbl-wd">4.0%</span></div>
+            <input type="range" id="sl-wd" min="3" max="8" value="4" step="0.25" oninput="update()">
+          </div>
         </div>
+        <div class="wd-note" id="wd-note"></div>
         <div class="stagger-note" id="stagger-note">Krissy is 3 years older — when we retire at the same time, she's 58 and Sam is 55.</div>
 
         <div class="toggle-row">
@@ -383,7 +389,7 @@
 
         <div class="result-box">
           <div><div class="r-label">Portfolio when we retire</div><div class="r-val" id="r-portfolio">$4.62M</div><div class="r-sub" id="r-portfolio-sub">at 7% growth</div></div>
-          <div><div class="r-label">Yearly income it makes</div><div class="r-val" id="r-income">$185k</div><div class="r-sub">at a safe 4% withdrawal</div></div>
+          <div><div class="r-label">Yearly income it makes</div><div class="r-val" id="r-income">$185k</div><div class="r-sub" id="r-income-sub">at a 4% withdrawal</div></div>
           <div><div class="r-label">Versus our spending</div><div class="r-val" id="r-vs" style="color:var(--sage)">+$61k</div><div class="r-sub" id="r-vs-sub">cushion every year</div></div>
           <div><div class="r-label">What we actually need</div><div class="r-val" id="r-fire">$3.1M</div><div class="r-sub" id="r-fire-sub">25× yearly spending</div></div>
         </div>
@@ -651,23 +657,59 @@ function update() {
   }
 
   const lastRetire = Math.max(samRetire, krissyRetire);
+  const wd = parseFloat(document.getElementById('sl-wd').value);
   const rows = project(rate, samRetire, krissyRetire, INVEST_LTI);
   const retRow = rows.find(r => r.year === lastRetire) || rows[rows.length - 1];
   const portfolio = retRow.total;
-  const annualIncome = portfolio * 0.04;
+  const annualIncome = portfolio * (wd / 100);
   const annualSpend = spend * 12;
-  const fireNum = annualSpend * 25;
+  const multiple = 100 / wd;                  // e.g. 4% → 25×
+  const fireNum = annualSpend * multiple;
   const cushion = annualIncome - annualSpend;
   const onTrack = portfolio >= fireNum;
+
+  // Withdrawal rate label + honest safety verdict
+  document.getElementById('lbl-wd').textContent = wd.toFixed(2).replace(/\.?0+$/, '') + '%';
+  const wdVerdict = document.getElementById('wd-verdict');
+  const wdNote = document.getElementById('wd-note');
+  let vLabel, vColor, vBg, vBorder, vMsg;
+  if (wd <= 3.5) {
+    vLabel = 'very safe'; vColor = 'var(--sage)';
+    vBg = 'rgba(91,140,110,0.15)'; vBorder = 'rgba(91,140,110,0.4)';
+    vMsg = `At ${wd}%, the portfolio is built to outlast us — very likely to survive 40+ years through any market history. We'd probably die with more than we started.`;
+  } else if (wd <= 4.5) {
+    vLabel = 'safe'; vColor = 'var(--sage)';
+    vBg = 'rgba(91,140,110,0.15)'; vBorder = 'rgba(91,140,110,0.4)';
+    vMsg = `${wd}% is the classic safe range. Designed to survive a 30-year retirement through the worst market sequences in history. Since we retire at 55, we lean toward the lower end.`;
+  } else if (wd <= 5.5) {
+    vLabel = 'needs flexibility'; vColor = 'var(--gold-lt)';
+    vBg = 'rgba(200,155,60,0.15)'; vBorder = 'rgba(200,155,60,0.4)';
+    vMsg = `At ${wd}%, we'd need to be genuinely willing to cut spending in bad years — a "guardrails" approach. Workable, but not set-and-forget. Travel is the natural dial to turn down.`;
+  } else if (wd <= 6.5) {
+    vLabel = 'aggressive'; vColor = 'var(--clay)';
+    vBg = 'rgba(192,123,84,0.15)'; vBorder = 'rgba(192,123,84,0.4)';
+    vMsg = `${wd}% is aggressive for a 40-year retirement. A bad first decade of returns could permanently damage the portfolio. This only works with real spending flexibility and probably some part-time income.`;
+  } else {
+    vLabel = 'risky'; vColor = 'var(--clay)';
+    vBg = 'rgba(192,123,84,0.22)'; vBorder = 'var(--clay)';
+    vMsg = `⚠ At ${wd}%, the money likely runs out well before we'd want it to — historically closer to 15–20 years, not the 40 we need at 55. The big income number here is a mirage.`;
+  }
+  wdVerdict.textContent = vLabel;
+  wdVerdict.style.color = vColor;
+  wdNote.textContent = vMsg;
+  wdNote.style.background = vBg;
+  wdNote.style.border = `1px solid ${vBorder}`;
+  wdNote.style.color = vColor;
 
   document.getElementById('r-portfolio').textContent = fmt(portfolio);
   document.getElementById('r-portfolio-sub').textContent = `at ${rate}% · retiring ${lastRetire}`;
   document.getElementById('r-income').textContent = fmt(annualIncome);
+  document.getElementById('r-income-sub').textContent = `at a ${wd}% withdrawal`;
   document.getElementById('r-vs').textContent = (cushion >= 0 ? '+' : '−') + fmt(Math.abs(cushion));
   document.getElementById('r-vs').style.color = cushion >= 0 ? 'var(--sage)' : 'var(--clay)';
   document.getElementById('r-vs-sub').textContent = cushion >= 0 ? 'cushion every year' : 'short every year';
   document.getElementById('r-fire').textContent = fmt(fireNum);
-  document.getElementById('r-fire-sub').textContent = '25× ' + fmt(annualSpend) + ' a year';
+  document.getElementById('r-fire-sub').textContent = multiple.toFixed(1).replace(/\.0$/, '') + '× ' + fmt(annualSpend) + ' a year';
 
   const status = document.getElementById('fire-status');
   const bridgeFund = retRow.taxable;
