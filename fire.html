@@ -177,6 +177,24 @@
   .mort-result strong { color: var(--ink); }
   .mort-result .hl { color: var(--gold); font-weight: 600; }
 
+  /* Social Security */
+  .ss-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 40px; margin-bottom: 28px; }
+  @media (max-width: 680px) { .ss-sliders { grid-template-columns: 1fr; } }
+  .ss-sliders input[type=range] { width: 100%; height: 5px; border-radius: 3px; margin-top: 6px; }
+  .ss-result { background: var(--cream); border: 1px solid var(--rule); border-radius: 12px; padding: 28px 30px; }
+  .ss-figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px; margin-bottom: 24px; }
+  .ss-lbl { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .ss-val { font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 500; letter-spacing: -0.02em; }
+  .ss-bar-wrap { padding-top: 20px; border-top: 1px solid var(--rule); }
+  .ss-bar-track { height: 10px; background: var(--rule); border-radius: 5px; overflow: hidden; position: relative; }
+  .ss-bar-fill { height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--gold), var(--green)); transition: width 0.4s ease; }
+  .ss-bar-cap { font-size: 0.85rem; color: var(--mid); margin-top: 10px; }
+  .ss-caveat { display: flex; gap: 14px; align-items: flex-start; margin-top: 24px; padding: 20px 24px; background: rgba(192,123,84,0.1); border: 1px solid rgba(192,123,84,0.35); border-left: 4px solid var(--clay); border-radius: 8px; }
+  .ss-caveat-icon { color: var(--clay); font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+  .ss-caveat-title { font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600; color: var(--clay); margin-bottom: 8px; }
+  .ss-caveat-body { font-size: 0.88rem; color: var(--mid); line-height: 1.7; }
+  .ss-caveat-body strong { color: var(--ink); }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -449,11 +467,66 @@
     </div>
   </div>
 
-  <!-- CHAPTER 6: THE RUNWAY -->
+  <!-- CHAPTER 6: SOCIAL SECURITY -->
   <div class="light">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Six · The Runway</div>
+        <div class="eyebrow">Chapter Six · The Safety Net</div>
+        <h2 class="title">Social Security is<br>bigger than <em>we thought</em></h2>
+        <p class="lede">We've been planning as if the portfolio has to carry everything. It doesn't. Once Social Security starts, it covers most of our life — guaranteed, inflation-adjusted, for as long as we live. The portfolio's real job is getting us from 2036 to then.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="ss-sliders">
+          <div>
+            <div class="slider-label" style="color:var(--mid);"><span>Sam claims at<span class="slider-age" id="ss-sam-year">2051</span></span><span class="slider-val" id="ss-sam-age" style="color:var(--gold);">70</span></div>
+            <input type="range" id="sl-ss-sam" min="62" max="70" value="70" step="1" oninput="updateSS()" style="accent-color:var(--gold);">
+          </div>
+          <div>
+            <div class="slider-label" style="color:var(--mid);"><span>Krissy claims at<span class="slider-age" id="ss-krissy-year">2048</span></span><span class="slider-val" id="ss-krissy-age" style="color:var(--gold);">70</span></div>
+            <input type="range" id="sl-ss-krissy" min="62" max="70" value="70" step="1" oninput="updateSS()" style="accent-color:var(--gold);">
+          </div>
+        </div>
+
+        <div class="ss-result">
+          <div class="ss-figures">
+            <div><div class="ss-lbl">Sam's monthly</div><div class="ss-val" id="ss-sam-amt">$5,275</div></div>
+            <div><div class="ss-lbl">Krissy's monthly</div><div class="ss-val" id="ss-krissy-amt">$4,392</div></div>
+            <div><div class="ss-lbl">Together, every year</div><div class="ss-val" id="ss-combined" style="color:var(--green);">$116,004</div></div>
+          </div>
+          <div class="ss-bar-wrap">
+            <div class="ss-bar-track"><div class="ss-bar-fill" id="ss-bar"></div></div>
+            <div class="ss-bar-cap" id="ss-cap">Covers 94% of our $124k retirement budget</div>
+          </div>
+        </div>
+
+        <div class="scenario-grid" style="margin-top:24px;">
+          <div class="scenario-card" style="border-left:4px solid var(--blue);">
+            <div class="scenario-title" style="color:var(--blue);">Claim early (62)</div>
+            <div class="scenario-body">Smaller checks, but they start sooner and take pressure off the portfolio in our 60s. Together that's about <strong>$64k a year</strong>. Makes sense if the market disappoints or if we'd rather have the money while we're most active.</div>
+          </div>
+          <div class="scenario-card" style="border-left:4px solid var(--green);">
+            <div class="scenario-title" style="color:var(--green);">Wait until 70</div>
+            <div class="scenario-body">The biggest possible checks — about <strong>$116k a year</strong> together, locked in for life and adjusted for inflation. The break-even is around <strong>age 79</strong>: live past that and waiting wins. It's really insurance against a long life.</div>
+          </div>
+        </div>
+
+        <div class="ss-caveat">
+          <span class="ss-caveat-icon">⚠</span>
+          <div>
+            <div class="ss-caveat-title">One honest catch</div>
+            <div class="ss-caveat-body">These figures come straight from our Social Security statements — but they assume we <em>keep working</em> until we claim. We're stopping in 2036, at 55 and 58. Social Security averages our best 35 years, so those missing years pull the number down — likely <strong>10–15% lower for Sam</strong>, less for Krissy. The real numbers are still substantial, but we should run SSA's calculator with future earnings set to zero to see the truth. Better to plan on less and be surprised.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 7: THE RUNWAY -->
+  <div class="warm">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Seven · The Runway</div>
         <h2 class="title">The big things<br>between <em>now and then</em></h2>
         <p class="lede">The next ten years aren't just about saving — they're about three kids growing up and a house getting paid off. Here's how the big expenses land, and how we handle them without knocking the plan off course.</p>
       </div>
@@ -792,6 +865,41 @@ function updateBudgetTotal() {
   const fire = annual * 25;
   document.getElementById('budget-total').textContent = '$' + total.toLocaleString();
   document.getElementById('budget-fire').textContent = `That's ${fmt(annual)} a year — needing a ${fmt(fire)} nest egg`;
+  // SS coverage depends on the budget — keep it in sync
+  if (document.getElementById('ss-bar')) updateSS();
+}
+
+// Social Security — actual figures from SSA statements (July 2026)
+// Sam born May 1981 (FRA 67), Krissy born Apr 1978 (FRA 67)
+const SS_SAM    = {62:2915, 63:3133, 64:3362, 65:3659, 66:3955, 67:4243, 68:4473, 69:4818, 70:5275};
+const SS_KRISSY = {62:2438, 63:2613, 64:2799, 65:3043, 66:3284, 67:3526, 68:3743, 69:4032, 70:4392};
+const SAM_BIRTH = 1981, KRISSY_BIRTH = 1978;
+
+function updateSS() {
+  const sAge = parseInt(document.getElementById('sl-ss-sam').value);
+  const kAge = parseInt(document.getElementById('sl-ss-krissy').value);
+  const sAmt = SS_SAM[sAge], kAmt = SS_KRISSY[kAge];
+  const combined = (sAmt + kAmt) * 12;
+
+  document.getElementById('ss-sam-age').textContent = sAge;
+  document.getElementById('ss-krissy-age').textContent = kAge;
+  document.getElementById('ss-sam-year').textContent = SAM_BIRTH + sAge;
+  document.getElementById('ss-krissy-year').textContent = KRISSY_BIRTH + kAge;
+  document.getElementById('ss-sam-amt').textContent = '$' + sAmt.toLocaleString();
+  document.getElementById('ss-krissy-amt').textContent = '$' + kAmt.toLocaleString();
+  document.getElementById('ss-combined').textContent = '$' + combined.toLocaleString();
+
+  // Coverage vs. current budget (live from the budget sliders)
+  const budget = BUDGET.reduce((s, b) => s + b.amt, 0) * 12;
+  const pct = Math.min(100, (combined / budget) * 100);
+  document.getElementById('ss-bar').style.width = pct + '%';
+  const gap = budget - combined;
+  const cap = document.getElementById('ss-cap');
+  if (gap <= 0) {
+    cap.innerHTML = `Covers <strong>all</strong> of our $${Math.round(budget/1000)}k budget — with $${Math.round(-gap/1000)}k a year to spare.`;
+  } else {
+    cap.innerHTML = `Covers <strong>${Math.round(pct)}%</strong> of our $${Math.round(budget/1000)}k budget — the portfolio only needs to cover $${Math.round(gap/1000)}k a year.`;
+  }
 }
 
 function updateMortgage() {
@@ -888,6 +996,7 @@ function init() {
   renderBudget();
   renderRunway();
   updateMortgage();
+  updateSS();
   update();
   // Animate arc
   setTimeout(() => {
