@@ -195,6 +195,26 @@
   .ss-caveat-body { font-size: 0.88rem; color: var(--mid); line-height: 1.7; }
   .ss-caveat-body strong { color: var(--ink); }
 
+  /* Sequence timeline */
+  .seq { position: relative; }
+  .seq-stage { display: flex; gap: 20px; margin-bottom: 8px; }
+  .seq-rail { position: relative; width: 16px; flex-shrink: 0; display: flex; justify-content: center; }
+  .seq-rail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--rule); }
+  .seq-stage:first-child .seq-rail::before { top: 10px; }
+  .seq-stage:last-child .seq-rail::before { bottom: calc(100% - 10px); }
+  .seq-dot { position: relative; width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; box-shadow: 0 0 0 4px var(--bg-warm); }
+  .seq-content { flex: 1; padding-bottom: 34px; }
+  .seq-when { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 5px; }
+  .seq-title { font-family: 'Fraunces', serif; font-size: 1.45rem; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 12px; }
+  .seq-sources { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+  .src { font-size: 0.72rem; padding: 5px 11px; border-radius: 20px; border: 1px solid; white-space: nowrap; }
+  .src.on { background: rgba(91,140,110,0.12); border-color: rgba(91,140,110,0.5); color: #4A7A5C; }
+  .src.maybe { background: rgba(200,155,60,0.12); border-color: rgba(200,155,60,0.5); color: #9A7726; }
+  .src.off { background: rgba(140,140,130,0.1); border-color: rgba(140,140,130,0.35); color: var(--muted); text-decoration: line-through; }
+  .seq-body { font-size: 0.92rem; color: var(--mid); line-height: 1.75; max-width: 620px; }
+  .seq-body strong { color: var(--ink); }
+  .seq-body em { color: var(--muted); }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -448,8 +468,8 @@
 
       <div class="reveal phases">
         <div class="phase-card">
-          <div class="phase-head"><div class="phase-age" style="color:var(--gold)">55<span style="font-size:1rem">–59½</span></div><div><div class="phase-period" style="color:var(--gold)">2036–2041 · The bridge</div><div class="phase-title">Living on the bridge fund</div></div></div>
-          <div class="phase-body">We retire a few years before we can touch our 401ks without penalty. That's exactly why we built the taxable investment account — around $560,000, funded mostly by drawing down Dad's IRA. We live off it, paying low capital-gains rates instead of income tax, while our retirement accounts keep growing untouched. Our health savings covers medical costs, tax-free. If we invested Sam's Disney stock too, this cushion would be far larger.</div>
+          <div class="phase-head"><div class="phase-age" style="color:var(--gold)">55<span style="font-size:1rem">–59½</span></div><div><div class="phase-period" style="color:var(--gold)">2036–2037 · The bridge</div><div class="phase-title">A shorter bridge than we thought</div></div></div>
+          <div class="phase-body">We retire before we can freely touch our 401ks — but the gap is small. Krissy turns 59½ in late 2037, only eighteen months after we stop working, and her $1.9M opens up. Until then we live off the taxable account (~$560,000), paying low capital-gains rates. Our health savings covers medical costs, tax-free. See the next chapter for exactly what opens when.</div>
         </div>
         <div class="phase-card">
           <div class="phase-head"><div class="phase-age" style="color:var(--blue)">59½<span style="font-size:1rem">–70</span></div><div><div class="phase-period" style="color:var(--blue)">2041–2051 · Full access</div><div class="phase-title">Everything unlocks</div></div></div>
@@ -460,8 +480,8 @@
           <div class="phase-body">By waiting until 70, we lock in the largest possible Social Security checks — for life. Medicare replaces the health insurance we'd been buying ourselves. Our spending naturally settles down. This is the steadiest, most secure stretch of the whole journey.</div>
         </div>
         <div class="phase-card">
-          <div class="phase-head"><div class="phase-age" style="color:var(--purple)">73<span style="font-size:1rem">+</span></div><div><div class="phase-period" style="color:var(--purple)">2054+ · Legacy</div><div class="phase-title">What we leave behind</div></div></div>
-          <div class="phase-body">The government requires us to start drawing from our 401ks at 73 — but the Roth conversions we did years earlier keep those forced withdrawals small. By now, travel has slowed and life is simpler. The focus turns to what we pass on to Noah, Sophia, and Tobin.</div>
+          <div class="phase-head"><div class="phase-age" style="color:var(--purple)">75<span style="font-size:1rem">+</span></div><div><div class="phase-period" style="color:var(--purple)">2053 & 2056 · Legacy</div><div class="phase-title">What we leave behind</div></div></div>
+          <div class="phase-body">The government requires us to start drawing from our 401ks at 75 — Krissy in 2053, Sam in 2056 — but the Roth conversions we did years earlier keep those forced withdrawals small. By now, travel has slowed and life is simpler. The focus turns to what we pass on to Noah, Sophia, and Tobin.</div>
         </div>
       </div>
     </div>
@@ -522,11 +542,111 @@
     </div>
   </div>
 
-  <!-- CHAPTER 7: THE RUNWAY -->
+  <!-- CHAPTER 7: THE SEQUENCE -->
   <div class="warm">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Seven · The Runway</div>
+        <div class="eyebrow">Chapter Seven · The Sequence</div>
+        <h2 class="title">What we spend,<br><em>and when</em></h2>
+        <p class="lede">This is the part that actually matters day to day. Different accounts open at different moments — some the day we retire, some years later. Here's the order we tap them, and why.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="seq">
+
+          <div class="seq-stage">
+            <div class="seq-rail"><div class="seq-dot" style="background:var(--gold);"></div></div>
+            <div class="seq-content">
+              <div class="seq-when">2036 – late 2037 · Sam 55, Krissy 58</div>
+              <div class="seq-title">The short bridge</div>
+              <div class="seq-sources">
+                <span class="src on">Taxable brokerage</span>
+                <span class="src on">HSA (medical only)</span>
+                <span class="src maybe">Krissy's 401k*</span>
+                <span class="src maybe">Sam's Disney plans*</span>
+                <span class="src off">Sam's old Microsoft 401k</span>
+              </div>
+              <div class="seq-body">We live off the taxable brokerage — roughly <strong>$559k</strong>, which alone covers about four and a half years. This stretch is shorter than it sounds: Krissy hits 59½ in October 2037, barely eighteen months in. <em>*And thanks to the "rule of 55," the plans we're leaving may open the day we walk out — see the note below.</em></div>
+            </div>
+          </div>
+
+          <div class="seq-stage">
+            <div class="seq-rail"><div class="seq-dot" style="background:var(--sage);"></div></div>
+            <div class="seq-content">
+              <div class="seq-when">Oct 2037 – Nov 2040 · Krissy 59½+, Sam 56–59</div>
+              <div class="seq-title">Krissy's accounts open</div>
+              <div class="seq-sources">
+                <span class="src on">Taxable brokerage</span>
+                <span class="src on">Krissy's 401k · $1.9M</span>
+                <span class="src on">HSA</span>
+                <span class="src off">Sam's old Microsoft 401k</span>
+              </div>
+              <div class="seq-body">Krissy turns 59½ and her <strong>$1.9M</strong> — our largest account — unlocks penalty-free, no questions asked. Any bridge worry disappears here. We draw from taxable first (low capital-gains rates), leaning on her 401k as needed. These are our lowest-income years ever, which makes them the best time to move money into Roth accounts.</div>
+            </div>
+          </div>
+
+          <div class="seq-stage">
+            <div class="seq-rail"><div class="seq-dot" style="background:var(--blue);"></div></div>
+            <div class="seq-content">
+              <div class="seq-when">Nov 2040 – 2048 · Sam 59½+</div>
+              <div class="seq-title">Everything unlocks</div>
+              <div class="seq-sources">
+                <span class="src on">Taxable brokerage</span>
+                <span class="src on">Krissy's 401k</span>
+                <span class="src on">Sam's Disney plans</span>
+                <span class="src on">Sam's old Microsoft 401k · $833k</span>
+                <span class="src on">HSA</span>
+              </div>
+              <div class="seq-body">Sam turns 59½ and the last locked door opens. Every account is now available without penalty. We keep the order deliberate — <strong>taxable first</strong>, then Roth conversions, then pre-tax as needed — filling up the low tax brackets each year while our income is still small. Medicare arrives at 65, and the health insurance line in our budget drops sharply.</div>
+            </div>
+          </div>
+
+          <div class="seq-stage">
+            <div class="seq-rail"><div class="seq-dot" style="background:var(--green);"></div></div>
+            <div class="seq-content">
+              <div class="seq-when">2048 (Krissy 70) → 2051 (Sam 70)</div>
+              <div class="seq-title">Social Security takes over</div>
+              <div class="seq-sources">
+                <span class="src on">Social Security · ~$116k/yr</span>
+                <span class="src on">Portfolio (much less needed)</span>
+                <span class="src on">HSA</span>
+              </div>
+              <div class="seq-body">This is the turn. Waiting until 70 gives us the biggest possible checks — together around <strong>$116k a year</strong>, guaranteed and inflation-adjusted for life. Suddenly the portfolio barely has to work. It shifts from being our income to being our cushion, and the money we didn't spend keeps compounding.</div>
+            </div>
+          </div>
+
+          <div class="seq-stage">
+            <div class="seq-rail"><div class="seq-dot" style="background:var(--purple);"></div></div>
+            <div class="seq-content">
+              <div class="seq-when">2053 (Krissy 75) → 2056 (Sam 75)</div>
+              <div class="seq-title">Required withdrawals begin</div>
+              <div class="seq-sources">
+                <span class="src on">Social Security</span>
+                <span class="src on">Required withdrawals (RMDs)</span>
+                <span class="src on">Everything else</span>
+              </div>
+              <div class="seq-body">At 75 the government makes us start drawing from the pre-tax accounts whether we want to or not. Every dollar we quietly moved into Roth back in our late 50s makes this smaller and gentler. If we're giving to charity anyway, we can send it straight from the IRA and skip the tax entirely.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="consider-callout" style="margin-top:36px;">
+          <div class="consider-icon">◆</div>
+          <div>
+            <div class="consider-title">The rule of 55 — worth confirming</div>
+            <div class="consider-body">There's a rule that says if you leave an employer in or after the year you turn 55, that employer's plan becomes penalty-free right away. Sam turns 55 in 2036 and Krissy is 58 — so <strong>both of our current plans may open the day we retire</strong>, which would erase the bridge entirely. The catch: each plan decides whether to allow partial withdrawals after you leave, and some force a lump sum instead. It's worth a call to Fidelity for Sam's Disney plans and Krissy's Microsoft plan before we count on it. Sam's <em>old</em> Microsoft 401k doesn't qualify either way — he left there long before 55, so it stays locked until November 2040.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 8: THE RUNWAY -->
+  <div class="light">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Eight · The Runway</div>
         <h2 class="title">The big things<br>between <em>now and then</em></h2>
         <p class="lede">The next ten years aren't just about saving — they're about three kids growing up and a house getting paid off. Here's how the big expenses land, and how we handle them without knocking the plan off course.</p>
       </div>
