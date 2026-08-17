@@ -363,7 +363,7 @@
       <div class="reveal">
         <div class="eyebrow">Chapter Two · The Buckets</div>
         <h2 class="title">Every account has<br>a <em>line to reach</em></h2>
-        <p class="lede">Each account is quietly filling toward the amount it needs to hold by 2036 for the plan to work. Here's how full each one is today — and how much runway is left to fill it.</p>
+        <p class="lede">The plan needs about $3.1M to work — that's the floor. Each account carries a share of that number, and each is quietly filling toward it. Here's how full each bucket is today, measured against the minimum it needs to hold.</p>
       </div>
 
       <div class="reveal">
@@ -1033,16 +1033,28 @@ const SS_KRISSY = {62:2438, 63:2613, 64:2799, 65:3043, 66:3284, 67:3526, 68:3743
 const SAM_BIRTH = 1981, KRISSY_BIRTH = 1978;
 
 function renderBuckets() {
-  // Each account: current value, projected 2036 target ("full"), color.
-  // Inherited IRA excluded — it drains rather than fills (shown as a note instead).
+  // Each bucket fills toward its SHARE of the $3.1M FIRE minimum (the floor we need),
+  // allocated in proportion to each account's projected 2036 contribution.
+  // When every bucket is full, we've hit exactly $3.1M. Anything beyond is cushion.
+  const FIRE_MIN = 3100000;
+  const proj = {
+    "Krissy's 401k":       2083244,
+    "Sam's old MSFT 401k":  891137,
+    "Sam's Disney 401k":    545445,
+    "Disney RSP":           172595,
+    "Taxable brokerage":    559066,
+    "HSA":                  224520,
+  };
+  const totalProj = Object.values(proj).reduce((s, v) => s + v, 0);
   const data = [
-    { name: "Krissy's 401k",       now: 637888, target: 2083244, color: "var(--purple)" },
-    { name: "Sam's old MSFT 401k", now: 423373, target: 891137,  color: "var(--blue)" },
-    { name: "Sam's Disney 401k",   now: 17007,  target: 545445,  color: "var(--sage)" },
-    { name: "Disney RSP",          now: 0,      target: 172595,  color: "var(--green)" },
-    { name: "Taxable brokerage",   now: 3375,   target: 559066,  color: "var(--gold)" },
-    { name: "HSA",                 now: 38470,  target: 224520,  color: "var(--sage)" },
-  ];
+    { name: "Krissy's 401k",       now: 637888, color: "var(--purple)" },
+    { name: "Sam's old MSFT 401k", now: 423373, color: "var(--blue)" },
+    { name: "Sam's Disney 401k",   now: 17007,  color: "var(--sage)" },
+    { name: "Disney RSP",          now: 0,      color: "var(--green)" },
+    { name: "Taxable brokerage",   now: 3375,   color: "var(--gold)" },
+    { name: "HSA",                 now: 38470,  color: "var(--sage)" },
+  ].map(d => ({ ...d, target: FIRE_MIN * (proj[d.name] / totalProj) }));
+
   const fmtK = n => n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : '$' + Math.round(n/1000) + 'k';
   const el = document.getElementById('buckets');
   if (!el) return;
@@ -1059,7 +1071,6 @@ function renderBuckets() {
     </div>`;
   }).join('');
 
-  // Animate fills after a beat
   setTimeout(() => {
     data.forEach((d, i) => {
       const pct = Math.max(2, Math.min(100, (d.now / d.target) * 100));
@@ -1069,10 +1080,9 @@ function renderBuckets() {
   }, 200);
 
   const totalNow = data.reduce((s, d) => s + d.now, 0);
-  const totalTarget = data.reduce((s, d) => s + d.target, 0);
-  const tp = Math.round(totalNow / totalTarget * 100);
+  const tp = Math.round(totalNow / FIRE_MIN * 100);
   document.getElementById('buckets-total').innerHTML =
-    `Across these accounts we're <strong>${tp}% of the way</strong> there — ${fmtK(totalNow)} of the ${fmtK(totalTarget)} they need to hold by 2036.`;
+    `Together these buckets are <strong>${tp}% of the way</strong> to the ${fmtK(FIRE_MIN)} floor we need — and they're on track to overflow well past it.`;
 }
 
 function updateSS() {
