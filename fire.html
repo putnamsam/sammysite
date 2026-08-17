@@ -215,6 +215,23 @@
   .seq-body strong { color: var(--ink); }
   .seq-body em { color: var(--muted); }
 
+  /* Buckets — filling vessels (on dark bg) */
+  .buckets { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 22px; margin-bottom: 28px; }
+  .bucket { display: flex; flex-direction: column; align-items: center; }
+  .bucket-vessel { position: relative; width: 100%; max-width: 120px; height: 180px; border: 2px solid rgba(255,255,255,0.18); border-top: none; border-radius: 0 0 14px 14px; overflow: hidden; background: rgba(255,255,255,0.03); }
+  .bucket-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; border-radius: 0 0 12px 12px; transition: height 1.3s cubic-bezier(0.22,1,0.36,1); }
+  .bucket-target-line { position: absolute; left: -4px; right: -4px; height: 2px; background: var(--gold-lt); opacity: 0.9; }
+  .bucket-target-tag { position: absolute; right: 0; font-size: 0.6rem; color: var(--gold-lt); transform: translateY(-14px); letter-spacing: 0.05em; }
+  .bucket-pct { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; font-family: 'Fraunces', serif; font-size: 1.35rem; color: var(--bg); text-shadow: 0 1px 3px rgba(0,0,0,0.4); z-index: 2; }
+  .bucket-name { font-size: 0.74rem; color: #C3C8BE; text-align: center; margin-top: 12px; line-height: 1.35; font-weight: 500; }
+  .bucket-nums { font-size: 0.68rem; color: var(--muted); text-align: center; margin-top: 4px; }
+  .buckets-total { text-align: center; font-size: 0.95rem; color: #C3C8BE; padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 24px; }
+  .buckets-total strong { font-family: 'Fraunces', serif; color: var(--gold-lt); font-weight: 500; }
+  .buckets-feed { display: flex; gap: 12px; align-items: flex-start; padding: 16px 20px; background: rgba(139,123,166,0.12); border: 1px solid rgba(139,123,166,0.35); border-radius: 8px; }
+  .feed-icon { color: var(--purple); font-size: 1.1rem; flex-shrink: 0; }
+  .buckets-feed span:last-child { font-size: 0.85rem; color: #C3C8BE; line-height: 1.65; }
+  .buckets-feed strong { color: var(--gold-lt); }
+
   /* ── BAR CHART ── */
   .chart-frame { margin-bottom: 12px; }
   .bar-chart { display: flex; gap: 5px; align-items: flex-end; height: 200px; }
@@ -340,11 +357,31 @@
     </div>
   </div>
 
-  <!-- CHAPTER 2: THE PLAN -->
+  <!-- CHAPTER 2: THE BUCKETS -->
+  <div class="dark-sec">
+    <div class="section">
+      <div class="reveal">
+        <div class="eyebrow">Chapter Two · The Buckets</div>
+        <h2 class="title">Every account has<br>a <em>line to reach</em></h2>
+        <p class="lede">Each account is quietly filling toward the amount it needs to hold by 2036 for the plan to work. Here's how full each one is today — and how much runway is left to fill it.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="buckets" id="buckets"></div>
+        <div class="buckets-total" id="buckets-total"></div>
+        <div class="buckets-feed">
+          <span class="feed-icon">↳</span>
+          <span>Dad's inherited IRA isn't filling — it's <strong>emptying on purpose</strong>. Every distribution (after tax) pours into the taxable brokerage, which is why that bucket climbs from almost nothing to ~$559k. One account drains so another can fill.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAPTER 3: THE PLAN -->
   <div class="warm">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Two · The Plan</div>
+        <div class="eyebrow">Chapter Three · The Plan</div>
         <h2 class="title">We don't need magic.<br>We need <em>consistency</em>.</h2>
         <p class="lede">There's no risky bet here, no lottery ticket. Just five simple habits repeated for ten years — and the quiet power of compound growth doing the rest.</p>
       </div>
@@ -371,7 +408,7 @@
   <div class="dark-sec">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Three · What If</div>
+        <div class="eyebrow">Chapter Four · What If</div>
         <h2 class="title" style="color:var(--cream)">Play with <em>our future</em></h2>
         <p class="lede">Nothing here is locked in stone. Move the sliders and watch how our choices shape where we land. What if the market's kinder? What if one of us steps away earlier?</p>
       </div>
@@ -440,7 +477,7 @@
   <div class="light">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Four · The Life</div>
+        <div class="eyebrow">Chapter Five · The Life</div>
         <h2 class="title">What retirement<br><em>feels like</em></h2>
         <p class="lede">These first years aren't about pinching pennies — they're about freedom. Travel a few times a year. Time with the kids. Slow mornings. Here's the life we're building, and you can shape it. Drag any line to see how it changes what we need.</p>
       </div>
@@ -461,7 +498,7 @@
   <div class="warm">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Five · The Journey</div>
+        <div class="eyebrow">Chapter Six · The Journey</div>
         <h2 class="title">How the money<br>carries us <em>through</em></h2>
         <p class="lede">Retirement isn't one long chapter — it unfolds in stages. Each one draws from different accounts in the smartest order, keeping taxes low and our savings working as long as possible.</p>
       </div>
@@ -491,7 +528,7 @@
   <div class="light">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Six · The Safety Net</div>
+        <div class="eyebrow">Chapter Seven · The Safety Net</div>
         <h2 class="title">Social Security is<br>bigger than <em>we thought</em></h2>
         <p class="lede">We've been planning as if the portfolio has to carry everything. It doesn't. Once Social Security starts, it covers most of our life — guaranteed, inflation-adjusted, for as long as we live. The portfolio's real job is getting us from 2036 to then.</p>
       </div>
@@ -546,7 +583,7 @@
   <div class="warm">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Seven · The Sequence</div>
+        <div class="eyebrow">Chapter Eight · The Sequence</div>
         <h2 class="title">What we spend,<br><em>and when</em></h2>
         <p class="lede">This is the part that actually matters day to day. Different accounts open at different moments — some the day we retire, some years later. Here's the order we tap them, and why.</p>
       </div>
@@ -646,7 +683,7 @@
   <div class="light">
     <div class="section">
       <div class="reveal">
-        <div class="eyebrow">Chapter Eight · The Runway</div>
+        <div class="eyebrow">Chapter Nine · The Runway</div>
         <h2 class="title">The big things<br>between <em>now and then</em></h2>
         <p class="lede">The next ten years aren't just about saving — they're about three kids growing up and a house getting paid off. Here's how the big expenses land, and how we handle them without knocking the plan off course.</p>
       </div>
@@ -995,6 +1032,49 @@ const SS_SAM    = {62:2915, 63:3133, 64:3362, 65:3659, 66:3955, 67:4243, 68:4473
 const SS_KRISSY = {62:2438, 63:2613, 64:2799, 65:3043, 66:3284, 67:3526, 68:3743, 69:4032, 70:4392};
 const SAM_BIRTH = 1981, KRISSY_BIRTH = 1978;
 
+function renderBuckets() {
+  // Each account: current value, projected 2036 target ("full"), color.
+  // Inherited IRA excluded — it drains rather than fills (shown as a note instead).
+  const data = [
+    { name: "Krissy's 401k",       now: 637888, target: 2083244, color: "var(--purple)" },
+    { name: "Sam's old MSFT 401k", now: 423373, target: 891137,  color: "var(--blue)" },
+    { name: "Sam's Disney 401k",   now: 17007,  target: 545445,  color: "var(--sage)" },
+    { name: "Disney RSP",          now: 0,      target: 172595,  color: "var(--green)" },
+    { name: "Taxable brokerage",   now: 3375,   target: 559066,  color: "var(--gold)" },
+    { name: "HSA",                 now: 38470,  target: 224520,  color: "var(--sage)" },
+  ];
+  const fmtK = n => n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : '$' + Math.round(n/1000) + 'k';
+  const el = document.getElementById('buckets');
+  if (!el) return;
+  el.innerHTML = data.map((d, i) => {
+    const pct = Math.max(0, Math.min(100, (d.now / d.target) * 100));
+    return `<div class="bucket">
+      <div class="bucket-vessel">
+        <div class="bucket-target-line" style="bottom:calc(100% - 2px);"><span class="bucket-target-tag">${fmtK(d.target)}</span></div>
+        <div class="bucket-pct">${Math.round(pct)}%</div>
+        <div class="bucket-fill" id="bfill-${i}" style="background:${d.color};"></div>
+      </div>
+      <div class="bucket-name">${d.name}</div>
+      <div class="bucket-nums">${fmtK(d.now)} → ${fmtK(d.target)}</div>
+    </div>`;
+  }).join('');
+
+  // Animate fills after a beat
+  setTimeout(() => {
+    data.forEach((d, i) => {
+      const pct = Math.max(2, Math.min(100, (d.now / d.target) * 100));
+      const f = document.getElementById('bfill-' + i);
+      if (f) f.style.height = pct + '%';
+    });
+  }, 200);
+
+  const totalNow = data.reduce((s, d) => s + d.now, 0);
+  const totalTarget = data.reduce((s, d) => s + d.target, 0);
+  const tp = Math.round(totalNow / totalTarget * 100);
+  document.getElementById('buckets-total').innerHTML =
+    `Across these accounts we're <strong>${tp}% of the way</strong> there — ${fmtK(totalNow)} of the ${fmtK(totalTarget)} they need to hold by 2036.`;
+}
+
 function updateSS() {
   const sAge = parseInt(document.getElementById('sl-ss-sam').value);
   const kAge = parseInt(document.getElementById('sl-ss-krissy').value);
@@ -1114,6 +1194,7 @@ function renderRunway() {
 
 function init() {
   renderBudget();
+  renderBuckets();
   renderRunway();
   updateMortgage();
   updateSS();
