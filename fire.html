@@ -339,20 +339,20 @@
           <path d="M 30 150 A 110 110 0 0 1 250 150" fill="none" stroke="#D5CDBE" stroke-width="14" stroke-linecap="round"/>
           <path id="arc-fill" d="M 30 150 A 110 110 0 0 1 250 150" fill="none" stroke="url(#arcgrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="345" stroke-dashoffset="345"/>
           <defs><linearGradient id="arcgrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C89B3C"/><stop offset="1" stop-color="#5B8C6E"/></linearGradient></defs>
-          <text x="140" y="120" text-anchor="middle" font-family="Fraunces, serif" font-size="38" font-weight="500" fill="#17201C">41%</text>
+          <text x="140" y="120" text-anchor="middle" font-family="Fraunces, serif" font-size="38" font-weight="500" fill="#17201C">42%</text>
           <text x="140" y="142" text-anchor="middle" font-family="Inter" font-size="11" fill="#8B9089" letter-spacing="1">OF THE WAY THERE</text>
         </svg>
-        <div class="arc-caption">$1.49M saved today, against a target of $3.6M</div>
+        <div class="arc-caption">$1.52M saved today, against a target of $3.6M</div>
       </div>
 
       <div class="reveal cards">
         <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's Disney 401k</div><div class="card-value" style="color:var(--blue)">$17k</div><div class="card-sub">Adding $24,500/yr + Disney's 2% match</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$423k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$638k</div><div class="card-sub">Our biggest · Microsoft adds 50% match · grows to $1.9M by 2036</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--blue)"></div><div class="card-label">Sam's old Microsoft 401k</div><div class="card-value" style="color:var(--blue)">$431k</div><div class="card-sub">Untouched · grows to $833k by 2036</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Krissy's Microsoft 401k</div><div class="card-value" style="color:var(--purple)">$653k</div><div class="card-sub">Our biggest · Microsoft adds 50% match · grows to $1.9M by 2036</div></div>
         <div class="card"><div class="card-accent" style="background:var(--sage)"></div><div class="card-label">Disney Retirement Savings Plan</div><div class="card-value" style="color:var(--sage)">Free money</div><div class="card-sub">Disney adds 6% of Sam's pay yearly — grows to $173k by 2036, costs us nothing</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$38k</div><div class="card-sub">Tax-free · $8,750/yr shared, plus catch-ups at 55</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--green)"></div><div class="card-label">Health savings (HSA)</div><div class="card-value" style="color:var(--green)">$40k</div><div class="card-sub">Tax-free · $8,750/yr shared, plus catch-ups at 55</div></div>
         <div class="card"><div class="card-accent" style="background:var(--gold)"></div><div class="card-label">Taxable investments</div><div class="card-value" style="color:var(--gold)">$3k</div><div class="card-sub">Grows to ~$559k from Dad's IRA — our bridge</div></div>
-        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Dad's inherited IRA</div><div class="card-value" style="color:var(--purple)">$369k</div><div class="card-sub">Drawing down through 2035</div></div>
+        <div class="card"><div class="card-accent" style="background:var(--purple)"></div><div class="card-label">Dad's inherited IRA</div><div class="card-value" style="color:var(--purple)">$379k</div><div class="card-sub">Drawing down through 2035</div></div>
       </div>
     </div>
   </div>
@@ -812,8 +812,8 @@ function fmt(n) {
 }
 
 function project(rate, samRetire, krissyRetire, investLTI) {
-  let samDisney = 17007, samRSP = 0, samMsft = 423373, krissy = 637888;
-  let hsa = 38470, taxable = 3375, ira = 369196;
+  let samDisney = 17007, samRSP = 0, samMsft = 430962, krissy = 652776;
+  let hsa = 40179, taxable = 3375, ira = 378833;
   const r = 1 + rate / 100;
   const LTI = 72870 * 0.76;
   const KRISSY_MATCH = 11750;        // Microsoft 50% match
@@ -1047,12 +1047,12 @@ function renderBuckets() {
   };
   const totalProj = Object.values(proj).reduce((s, v) => s + v, 0);
   const data = [
-    { name: "Krissy's 401k",       now: 637888, color: "var(--purple)" },
-    { name: "Sam's old MSFT 401k", now: 423373, color: "var(--blue)" },
+    { name: "Krissy's 401k",       now: 652776, color: "var(--purple)" },
+    { name: "Sam's old MSFT 401k", now: 430962, color: "var(--blue)" },
     { name: "Sam's Disney 401k",   now: 17007,  color: "var(--sage)" },
     { name: "Disney RSP",          now: 0,      color: "var(--green)" },
     { name: "Taxable brokerage",   now: 3375,   color: "var(--gold)" },
-    { name: "HSA",                 now: 38470,  color: "var(--sage)" },
+    { name: "HSA",                 now: 40179,  color: "var(--sage)" },
   ].map(d => ({ ...d, target: FIRE_MIN * (proj[d.name] / totalProj) }));
 
   const fmtK = n => n >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M' : '$' + Math.round(n/1000) + 'k';
@@ -1213,7 +1213,7 @@ function init() {
   setTimeout(() => {
     const arc = document.getElementById('arc-fill');
     if (arc) arc.style.transition = 'stroke-dashoffset 1.6s ease';
-    if (arc) arc.style.strokeDashoffset = 345 - (345 * 0.414);
+    if (arc) arc.style.strokeDashoffset = 345 - (345 * 0.42);
   }, 400);
   // Scroll reveal
   const obs = new IntersectionObserver((entries) => {
