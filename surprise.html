@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Trip — April 2027</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:      #F4EFE6;
+  --bg-warm: #EFE8DB;
+  --dark:    #17201C;
+  --forest:  #22332B;
+  --mid:     #4A5A4E;
+  --muted:   #8B9089;
+  --rule:    #D5CDBE;
+  --paper:   #EBE3D5;
+  --gold:    #C89B3C;
+  --gold-lt: #E0C170;
+  --green:   #5B8C6E;
+  --sage:    #8AAB8E;
+  --blue:    #5E8299;
+  --purple:  #8B7BA6;
+  --clay:    #C07B54;
+  --cream:   #F9F5EC;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ font-family:'Inter',sans-serif; color:var(--mid); background:var(--bg); line-height:1.6; -webkit-font-smoothing:antialiased; }
+a{ color:inherit; }
+::selection{ background:var(--gold-lt); color:var(--dark); }
+@media (prefers-reduced-motion: reduce){ *{ animation:none!important; transition:none!important; } }
+
+.section{ max-width:920px; margin:0 auto; padding:5rem 1.5rem; }
+.hero .section{ padding-top:6.5rem; padding-bottom:6.5rem; }
+
+.light{ background:var(--bg); }
+.warm{ background:var(--bg-warm); }
+.dark-sec{ background:var(--forest); color:var(--cream); }
+.hero{ background:var(--dark); color:var(--cream); }
+
+.eyebrow{ font-size:0.75rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem; }
+.dark-sec .eyebrow, .hero .eyebrow{ color:var(--gold-lt); }
+
+.title{ font-family:'Fraunces',serif; font-weight:500; font-size:clamp(2rem,5vw,3rem); line-height:1.1; color:var(--dark); }
+.hero .title, .dark-sec .title{ color:var(--cream); }
+.title em{ font-style:italic; color:var(--gold); }
+.hero .title{ font-size:clamp(3rem,9vw,5.5rem); }
+
+.lede{ margin-top:1.1rem; max-width:56ch; font-size:1.05rem; color:var(--mid); }
+.hero .lede, .dark-sec .lede{ color:rgba(249,245,236,0.75); }
+
+.reveal{ opacity:0; transform:translateY(14px); transition:opacity 0.7s ease, transform 0.7s ease; margin-bottom:2.4rem; }
+.reveal.visible{ opacity:1; transform:none; }
+
+.route-strip{ margin-top:2.4rem; display:flex; flex-wrap:wrap; gap:0.5rem 0.8rem; font-size:1rem; letter-spacing:0.03em; }
+.route-strip .code{ padding-bottom:0.2rem; border-bottom:2px solid var(--gold); }
+.route-strip .sep{ color:rgba(249,245,236,0.4); }
+
+.day-strip{ margin-top:1.8rem; display:flex; flex-wrap:wrap; gap:0.6rem; }
+.day-strip .stop{ font-size:0.78rem; padding:0.4rem 0.8rem; border:1px solid rgba(249,245,236,0.25); border-radius:999px; color:rgba(249,245,236,0.85); }
+.day-strip .stop b{ color:var(--gold-lt); font-weight:500; }
+
+.day-badge{ display:inline-block; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold); border-radius:999px; padding:0.25rem 0.7rem; margin-bottom:0.9rem; }
+.dark-sec .day-badge{ color:var(--gold-lt); border-color:var(--gold-lt); }
+
+.cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.2rem; }
+.card{ background:var(--cream); border-radius:6px; padding:1.4rem 1.5rem; border-left:3px solid var(--gold); }
+.dark-sec .card{ background:var(--paper); color:var(--dark); }
+.card-label{ font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem; }
+.card-value{ font-family:'Fraunces',serif; font-weight:500; font-size:1.25rem; color:var(--dark); }
+.card-sub{ font-size:0.88rem; color:var(--mid); margin-top:0.3rem; }
+
+.leg-head{ display:flex; align-items:baseline; gap:0.9rem; margin-bottom:0.4rem; }
+.leg-num{ font-size:0.75rem; color:var(--gold); letter-spacing:0.1em; }
+
+.opts{ margin-top:1.6rem; }
+.opts h4{ font-family:'Fraunces',serif; font-weight:500; font-size:1rem; color:var(--dark); margin-bottom:0.7rem; }
+.dark-sec .opts h4{ color:var(--cream); }
+.opt-list{ list-style:none; }
+.opt-list li{ padding:0.55rem 0; border-bottom:1px solid var(--rule); font-size:0.92rem; }
+.opt-list li:last-child{ border-bottom:none; }
+.opt-list a{ color:var(--dark); text-decoration:underline; text-decoration-color:var(--gold); text-underline-offset:3px; }
+.dark-sec .opt-list a{ color:var(--cream); }
+.opt-note{ color:var(--muted); font-size:0.85rem; }
+
+.receipt-row{ display:flex; justify-content:space-between; gap:1rem; padding:0.7rem 0; border-bottom:1px dashed var(--rule); font-size:0.92rem; }
+.receipt-row .sub{ display:block; font-size:0.78rem; color:var(--muted); margin-top:0.15rem; }
+.receipt-total{ display:flex; justify-content:space-between; padding-top:1.1rem; margin-top:0.4rem; font-family:'Fraunces',serif; font-weight:500; font-size:1.15rem; color:var(--dark); }
+.dark-sec .receipt-total{ color:var(--cream); }
+
+.consider-callout{ border-left:3px solid var(--blue); background:rgba(94,130,153,0.1); padding:1rem 1.2rem; border-radius:4px; font-size:0.9rem; margin-top:1.5rem; }
+.consider-callout::before{ content:"◆ "; color:var(--blue); }
+
+footer{ background:var(--dark); color:rgba(249,245,236,0.6); padding:3rem 1.5rem; text-align:center; font-size:0.85rem; }
+
+#gate{ min-height:100vh; background:var(--dark); color:var(--cream); display:flex; align-items:center; justify-content:center; padding:1.5rem; }
+#gate .box{ text-align:center; max-width:360px; }
+#gate .title{ color:var(--cream); font-size:2rem; margin-bottom:1.2rem; }
+#gate input{ font-family:'Inter',sans-serif; font-size:1rem; padding:0.7rem 1rem; border-radius:4px; border:1px solid var(--rule); width:100%; margin-bottom:0.9rem; background:var(--cream); color:var(--dark); }
+#gate button{ font-family:'Inter',sans-serif; font-size:0.95rem; padding:0.7rem 1.4rem; border-radius:4px; border:none; background:var(--gold); color:var(--dark); cursor:pointer; font-weight:500; }
+#gate button:hover{ background:var(--gold-lt); }
+#gate-error{ display:none; color:var(--clay); font-size:0.85rem; margin-top:0.8rem; }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h1 class="title">Fifty, <em>en route.</em></h1>
+    <p class="lede" style="margin-bottom:1.5rem;">This one's private.</p>
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()">Enter</button>
+    <div id="gate-error">Not quite — try again.</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+
+<div class="hero">
+  <div class="section reveal visible">
+    <div class="eyebrow">Milestone journey · April 2027</div>
+    <h1 class="title">Fifty,<br><em>en route.</em></h1>
+    <p class="lede">Nineteen days. London to Paris to Rome, then nowhere at all — just a lagoon, a retractable roof, and the stars.</p>
+    <div class="route-strip">
+      <span class="code">SEA</span><span class="sep">→</span>
+      <span class="code">LHR</span><span class="sep">→</span>
+      <span class="code">CDG</span><span class="sep">→</span>
+      <span class="code">FCO</span><span class="sep">→</span>
+      <span class="code">MLE</span>
+    </div>
+    <div class="day-strip">
+      <span class="stop"><b>Days 1–3</b> London</span>
+      <span class="stop"><b>Days 3–5</b> Paris</span>
+      <span class="stop"><b>Days 5–7</b> Rome</span>
+      <span class="stop"><b>Days 7–11</b> Maldives</span>
+    </div>
+  </div>
+</div>
+
+<div class="light">
+  <div class="section">
+    <div class="reveal">
+      <div class="eyebrow">Chapter One · London</div>
+      <div class="day-badge">Days 1–3</div>
+      <h2 class="title">Art Deco <em>and</em> afternoon light</h2>
+      <p class="lede">Qatar Airways QSuite from Seattle via Doha. Two nights at Claridge's, Mayfair.</p>
+    </div>
+    <div class="reveal">
+      <div class="opts">
+        <h4>See</h4>
+        <ul class="opt-list">
+          <li><a href="https://www.wallacecollection.org/" target="_blank">Wallace Collection</a> <span class="opt-note">— free, uncrowded Old Masters</span></li>
+          <li><a href="https://www.hrp.org.uk/kensington-palace/" target="_blank">Kensington Palace</a> <span class="opt-note">— royal apartments and gardens</span></li>
+          <li><a href="https://www.soane.org/" target="_blank">Sir John Soane's Museum</a> <span class="opt-note">— eccentric, intimate, free</span></li>
+        </ul>
+      </div>
+      <div class="opts">
+        <h4>Eat</h4>
+        <ul class="opt-list">
+          <li><a href="https://corebyclaresmyth.com/" target="_blank">Core by Clare Smyth</a> <span class="opt-note">— 3 Michelin stars</span></li>
+          <li><a href="https://sketch.london/" target="_blank">Sketch</a> <span class="opt-note">— Michelin-starred, theatrical rooms</span></li>
+          <li><a href="https://www.scotts-restaurant.com/" target="_blank">Scott's Mayfair</a> <span class="opt-note">— classic seafood, old-school glamour</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="warm">
+  <div class="section">
+    <div class="reveal">
+      <div class="eyebrow">Chapter Two · Paris</div>
+      <div class="day-badge">Days 3–5</div>
+      <h2 class="title">The <em>postcard</em> version, by rail</h2>
+      <p class="lede">Eurostar Business Premier, St Pancras to Gare du Nord. Two nights at Hôtel Plaza Athénée.</p>
+    </div>
+    <div class="reveal">
+      <div class="opts">
+        <h4>See</h4>
+        <ul class="opt-list">
+          <li><a href="https://www.musee-orangerie.fr/en" target="_blank">Musée de l'Orangerie</a> <span class="opt-note">— Monet's Water Lilies, calm</span></li>
+          <li><a href="https://www.musee-rodin.fr/en" target="_blank">Musée Rodin</a> <span class="opt-note">— sculpture garden</span></li>
+          <li><a href="https://www.sainte-chapelle.fr/en" target="_blank">Sainte-Chapelle</a> <span class="opt-note">— stained-glass, breathtaking light</span></li>
+        </ul>
+      </div>
+      <div class="opts">
+        <h4>Eat</h4>
+        <ul class="opt-list">
+          <li><a href="https://www.oetkerhotels.com/hotels/le-bristol-paris/restaurants-bars/epicure/" target="_blank">Épicure at Le Bristol</a> <span class="opt-note">— 3 Michelin stars</span></li>
+          <li><a href="https://www.guysavoy.com/" target="_blank">Guy Savoy</a> <span class="opt-note">— 3 Michelin stars, Left Bank</span></li>
+          <li><a href="https://www.restaurants-toureiffel.com/en/jules-verne-restaurant.html" target="_blank">Le Jules Verne</a> <span class="opt-note">— inside the Eiffel Tower</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="light">
+  <div class="section">
+    <div class="reveal">
+      <div class="eyebrow">Chapter Three · Rome</div>
+      <div class="day-badge">Days 5–7</div>
+      <h2 class="title">The <em>Secret Garden</em></h2>
+      <p class="lede">Short flight from Paris. Two nights at Hotel de Russie, between the Spanish Steps and Piazza del Popolo.</p>
+    </div>
+    <div class="reveal">
+      <div class="opts">
+        <h4>See</h4>
+        <ul class="opt-list">
+          <li><a href="https://www.getyourguide.com/vatican-museums-l2738/" target="_blank">Vatican Museums early-access tour</a> <span class="opt-note">— private, before the crowds</span></li>
+          <li><a href="https://galleriaborghese.beniculturali.it/en/" target="_blank">Galleria Borghese</a> <span class="opt-note">— Bernini, timed-entry</span></li>
+          <li><a href="https://www.turismoroma.it/en/places/trastevere" target="_blank">Trastevere evening walk</a> <span class="opt-note">— self-guided, no ticket needed</span></li>
+        </ul>
+      </div>
+      <div class="opts">
+        <h4>Eat</h4>
+        <ul class="opt-list">
+          <li><a href="https://romecavalieri.com/la-pergola/" target="_blank">La Pergola</a> <span class="opt-note">— Rome's only 3-Michelin-star, rooftop</span></li>
+          <li>Le Jardin de Russie <span class="opt-note">— in-hotel, the Secret Garden itself</span></li>
+          <li><a href="https://www.aromarestaurant.it/" target="_blank">Aroma at Palazzo Manfredi</a> <span class="opt-note">— Michelin-starred, Colosseum view</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="dark-sec">
+  <div class="section">
+    <div class="reveal">
+      <div class="eyebrow">Chapter Four · Soneva Jani, Maldives</div>
+      <div class="day-badge">Days 7–11</div>
+      <h2 class="title">The point of <em>all this</em></h2>
+      <p class="lede">Qatar Airways QSuite via Doha. Four nights, 1 Bedroom Water Retreat with Slide — retractable roof, private pool, straight into the lagoon.</p>
+    </div>
+    <div class="reveal">
+      <div class="opts">
+        <h4>Do</h4>
+        <ul class="opt-list">
+          <li><a href="https://soneva.com/experiences/" target="_blank">Sunset dolphin cruise</a> <span class="opt-note">— canapés and champagne</span></li>
+          <li><a href="https://soneva.com/experiences/" target="_blank">Private sandbank dinner</a> <span class="opt-note">— candlelit, own islet</span></li>
+          <li><a href="https://soneva.com/experiences/" target="_blank">Coral planting excursion</a> <span class="opt-note">— hands-on, low-key</span></li>
+        </ul>
+      </div>
+      <div class="opts">
+        <h4>Eat</h4>
+        <ul class="opt-list">
+          <li>So Starstruck <span class="opt-note">— overwater observatory restaurant, book resort-side</span></li>
+          <li>Gizzi's <span class="opt-note">— Thai-Asian, overwater</span></li>
+          <li>In-villa chef's table <span class="opt-note">— arranged through Soneva reservations</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="warm">
+  <div class="section">
+    <div class="reveal">
+      <div class="eyebrow">The fare</div>
+      <h2 class="title">Roughly <em>$26–32K</em></h2>
+      <p class="lede">Flights and hotels, current-year pricing. Expect typical 5–8% creep by April 2027.</p>
+    </div>
+    <div class="reveal">
+      <div class="receipt-row"><div>Qatar QSuite, Seattle ↔ Europe ↔ Malé <span class="sub">2 travelers</span></div><div>$8,000–12,000</div></div>
+      <div class="receipt-row"><div>Eurostar Business Premier <span class="sub">London → Paris, one-way</span></div><div>$700–1,000</div></div>
+      <div class="receipt-row"><div>Intra-Europe flight <span class="sub">Paris → Rome</span></div><div>$800–1,500</div></div>
+      <div class="receipt-row"><div>Claridge's, London <span class="sub">Superior × 2 nights</span></div><div>~$2,300</div></div>
+      <div class="receipt-row"><div>Plaza Athénée, Paris <span class="sub">Superior × 2 nights</span></div><div>$3,900–5,200</div></div>
+      <div class="receipt-row"><div>Hotel de Russie, Rome <span class="sub">Classic × 2 nights</span></div><div>$2,600–2,900</div></div>
+      <div class="receipt-row"><div>Soneva Jani <span class="sub">1BR Water Retreat w/ Slide × 4 nights</span></div><div>~$7,000</div></div>
+      <div class="receipt-total"><div>Flights + hotels</div><div>$26,000–32,000</div></div>
+      <div class="consider-callout">Leaves roughly $5,000–15,000 of the $30–45K frame for meals, transfers, and excursions — worth padding the upper end for Soneva Jani's spa and dining.</div>
+    </div>
+  </div>
+</div>
+
+<footer>Fifty looks good on you. · Last updated <span id="updated"></span></footer>
+
+</div>
+
+<script>
+function checkPw(){
+  const val = document.getElementById('pw-input').value.toLowerCase().trim();
+  if (val === atob('bm9wZQ==')) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+  }
+}
+
+function init(){
+  document.getElementById('updated').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+</script>
+
+</body>
+</html>
